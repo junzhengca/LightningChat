@@ -1,11 +1,17 @@
-# LightningChat
+# ⚡ LightningChat
+A lightning fast / self-hosted website chat system for small teams.
 
-## About
-Developed at the University of Toronto Scarborugh, LightningChat is a real-time chat system that supports email fallback on your website.
+Developed at the University of Toronto Scarborugh, LightningChat is intended to be an open-source alternative to Drift and Intercom. Now used on AMACSS's offical website.
 
-The goal is to build an open-source alternative to Drift and Intercom with full Slack support.
+-----------------------------------
 
-(c) Jun Zheng (junthehacker) 2017
+一个为小团队定制的轻量自托管式网站实时聊天系统。
+
+在多伦多大学（士嘉堡校区）开发，LightningChat是一个Drift和Intercom的开源版。现在在AMACSS的官网上使用。
+
+-----------------------------------
+## Download
+LightningChat is still under heavy development. You can download the source now, but it might not be useable.
 
 ![](http://i.imgur.com/eqqLyXr.png)
 ![](http://i.imgur.com/X1KxQoB.png)
@@ -58,3 +64,5 @@ You can also get a chat history, just type `history {session id}`.
 
 Once you are done, type `close {session id}` to close a chat session.
 ![](http://i.imgur.com/R8iCpVe.png)
+
+(c) Jun Zheng (junthehacker) 2017

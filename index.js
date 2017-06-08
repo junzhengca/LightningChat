@@ -550,8 +550,8 @@ app.get('/sessions/:session_id/heartbeat', (req, res) => {
     })
 })
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!' + genUUID())
+app.listen(settings.app_port, function () {
+    console.log('LightningChat running on port ' + settings.app_port);
 })
 
 function genUUID(){

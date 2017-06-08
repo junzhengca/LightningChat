@@ -23,7 +23,7 @@ function startRtm() {
     }).startRTM(function(err,bot,payload) {
         if (err) {
             console.log('Failed to start RTM')
-            return setTimeout(start_rtm, 60000);
+            return setTimeout(startRtm, 60000);
         }
         console.log("RTM started!");
     });

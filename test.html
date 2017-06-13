@@ -1,145 +1,138 @@
 <!doctype html>
 <html>
     <head>
-        <script src="sdk.js"></script>
+        <!--<script src="sdk.js"></script>-->
+        <!--<link href="main.css" rel="stylesheet" type="text/css" />-->
         <script src="https://ssl.jackzh.com/file/js/jquery/jquery-2.2.2.min.js"></script>
-        <link href="main.css" rel="stylesheet" type="text/css" />
-        <link href="https://ssl.jackzh.com/file/css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!--<link href="https://ssl.jackzh.com/file/css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />-->
     </head>
     <body>
-        <div id="messages-container"></div>
+        <!--<div id="messages-container"></div>
         <div>
             <input type="text" id="message-box" />
             <button id="send-button">Send</button>
-        </div>
-        <div id="lightning-chat-container">
-            <button id="begin-chat-button"><i class="fa fa-comments" aria-hidden="true"></i></button>
-            <div id="content-container" class="not-shown">
-                <div id="title">
+        </div>-->
+        <!--<div id="lightning-chat-container" class="lightning-chat-reset">
+            <button id="begin-chat-button" class="lightning-chat-reset"><i class="fa fa-comments" aria-hidden="true"></i></button>
+            <div id="content-container" class="not-shown lightning-chat-reset">
+                <div id="title" class="lightning-chat-reset">
                     Welcome to AMACSS! How can we help?
                     <br><br>
-                    <div id="lightning-chat-email-form" style="display: none;">
+                    <div id="lightning-chat-email-form" class="lightning-chat-reset" style="display: none;">
                         <label>What is you email address? if you are away, you will recieve an email notification when we reply.</label>
-                        <input type="text" name="email" id="lightning-chat-email-box" />
+                        <input type="text" name="email" class="lightning-chat-reset" id="lightning-chat-email-box" />
                     </div>
-                    <div id="lightning-chat-email-status" style="display: none;">
+                    <div id="lightning-chat-email-status" style="display: none;" class="lightning-chat-reset">
                         <label></label>
                     </div>
                 </div>
-                <div id="bubble-container">
+                <div id="bubble-container" class="lightning-chat-reset">
                 </div>
-                <div id="controls">
-                    <input type="text" id="lighting-message-area" placeholder="Enter your message" />
+                <div id="controls" class="lightning-chat-reset">
+                    <input type="text" id="lighting-message-area" placeholder="Enter your message" class="lightning-chat-reset" />
                 </div>
-                <div id="new-chat-controls">
+                <div id="new-chat-controls" class="lightning-chat-reset">
                     <i class="fa fa-refresh" aria-hidden="true"></i> New Chat
                 </div>
             </div>
-        </div>
+        </div>-->
     </body>
 </html>
+<script src="lightningchat.js"></script>
 <script>
-    LightningChat.devMode = true;
-    LightningChat.apiBase = "http://localhost:3000";
-    LightningChat.init(function(){
-        reloadSessionEmail();
-    });
-    function reloadSessionEmail(){
-        LightningChat.loadSessionEmail(function(email){
-            if(!email){
-                $("#lightning-chat-email-form").slideDown();
-                $("#lightning-chat-email-status").slideUp();
-            } else {
-                $("#lightning-chat-email-form").slideUp();
-                $("#lightning-chat-email-status label").html("Hi! " + email);
-                $("#lightning-chat-email-status").slideDown();
-            }
-        });
-    }
+    // LightningChat.devMode = true;
+    // LightningChat.apiBase = "http://localhost:3000";
+    // $("body").append('<link href="https://ssl.jackzh.com/file/css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');
+    // $("body").append("<div id=\"lightning-chat-container\" class=\"lightning-chat-reset\"><button id=\"begin-chat-button\" class=\"lightning-chat-reset\"><i class=\"fa fa-comments\" aria-hidden=\"true\"></i></button><div id=\"content-container\" class=\"not-shown lightning-chat-reset\"><div id=\"title\" class=\"lightning-chat-reset\">Welcome to AMACSS! How can we help?<br><br><div id=\"lightning-chat-email-form\" class=\"lightning-chat-reset\" style=\"display: none;\"><label>What is you email address? if you are away, you will recieve an email notification when we reply.</label><input type=\"text\" name=\"email\" class=\"lightning-chat-reset\" id=\"lightning-chat-email-box\" /></div><div id=\"lightning-chat-email-status\" style=\"display: none;\" class=\"lightning-chat-reset\"><label></label></div></div><div id=\"bubble-container\" class=\"lightning-chat-reset\"></div><div id=\"controls\" class=\"lightning-chat-reset\"><input type=\"text\" id=\"lighting-message-area\" placeholder=\"Enter your message\" class=\"lightning-chat-reset\" /></div><div id=\"new-chat-controls\" class=\"lightning-chat-reset\"><i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> New Chat</div></div></div>");
+    // $("body").append("<style>.lightning-chat-reset {padding: 0;margin: 0;border: none;outline: none;position: static;}#lightning-chat-container {position: fixed;right: 20px;bottom: 20px;font-family: Arial, Helvetica, sans-serif;}#lightning-chat-container #begin-chat-button {background-color: #1E88E5;color: white;border: none;font-size: 25px;border-radius: 100px;height: 60px;width: 60px;box-shadow: rgba(0,0,0,0.2) 5px 5px 10px;cursor: pointer;transition: all ease 0.3s;}#lightning-chat-container #begin-chat-button:hover {background-color: #0D47A1;transition: all ease 0.3s;}#lightning-chat-container #begin-chat-button.active {background-color: #0D47A1;}#lightning-chat-container #content-container {background-color: white;width: 400px;position: absolute;bottom: 80px;right: 0;height: auto;box-shadow: rgba(0,0,0,0.2) 3px 3px 10px;border-radius: 10px;overflow: hidden;transition: all ease 0.5s;opacity: 1;}#lightning-chat-container.closed #content-container {background-color: #E0E0E0;}#lightning-chat-container.closed #content-container #bubble-container {opacity: 0.7;}#lightning-chat-container.closed #controls {display: none;}#lightning-chat-container.closed #new-chat-controls {display: block;}#lightning-chat-container #content-container.not-shown {right: -500px;transition: all ease 0.5s;opacity: 0;}#lightning-chat-container #title {background-color: #1976D2;color: white;padding: 20px;}#lightning-chat-container #title label {display: block;font-size: 13px;color: #90CAF9;}#lightning-chat-container #title input {background-color: transparent;color: white;outline: none;border: none;border-bottom: rgba(255,255,255,0.3) 2px solid;}#lightning-chat-container #title input.error {border-bottom: red 2px solid;}#lightning-chat-container #controls {height: 45px;background-color: #FAFAFA;border-top: #EEEEEE 2px solid;width: 90%;padding-left: 5%;padding-right: 5%;}#lightning-chat-container #new-chat-controls {display: none;height: 45px;background-color: #1E88E5;border-top: #1E88E5 2px solid;text-align: center;line-height: 45px;color: white;font-size: 13px;cursor: pointer;transition: all ease 0.3s;}#lightning-chat-container #new-chat-controls:hover {background-color: #1565C0;transition: all ease 0.3s;}#lightning-chat-container #controls input {height: 45px;/*border: none;*/font-size: 14px;/*line-height: 40px;*/border: none;outline: none;background-color: transparent;width: 100%;}#lightning-chat-container #bubble-container {/*position: absolute;*/bottom: 50px;left: 0;height: 400px;max-height: 70%;overflow-y: scroll;padding-bottom: 20px;}#lightning-chat-container #bubble-container .left-bubble,#lightning-chat-container #bubble-container .right-bubble {padding: 15px;padding-bottom: 0;}#lightning-chat-container #bubble-container .right-bubble {text-align: right;  }#lightning-chat-container #bubble-container .left-bubble p,#lightning-chat-container #bubble-container .right-bubble p {padding: 10px;margin: 0;display: inline-block;padding-left: 15px;padding-right: 15px;font-size: 14px;border-radius: 20px;}#lightning-chat-container #bubble-container .left-bubble p {background-color: #F5F5F5;color: #424242;border-top-left-radius: 0px;}#lightning-chat-container #bubble-container .right-bubble p {background-color: #039BE5;color: #E1F5FE;border-bottom-right-radius: 0px;}</style>");
+    // LightningChat.init(function(){
+    //     reloadSessionEmail();
+    // });
+    // function reloadSessionEmail(){
+    //     LightningChat.loadSessionEmail(function(email){
+    //         if(!email){
+    //             $("#lightning-chat-email-form").slideDown();
+    //             $("#lightning-chat-email-status").slideUp();
+    //         } else {
+    //             $("#lightning-chat-email-form").slideUp();
+    //             $("#lightning-chat-email-status label").html("Hi! " + email);
+    //             $("#lightning-chat-email-status").slideDown();
+    //         }
+    //     });
+    // }
 
-    $("#new-chat-controls").click(function(){
-        LightningChat.setCookie("lcskey", "", -1);
-        LightningChat.init(function(){
-            reloadSessionEmail();
-        });
-    })
-    $("#lightning-chat-email-box").blur(function(){
-        if(LightningChat.validateEmail($(this).val())){
-            // alert("year!");
-            $(this).removeClass("error");
-            $(this).attr("disabled", true);
-            LightningChat.setSessionEmail($(this).val(), function(result){
-                if(result){
-                    $("#lightning-chat-email-box").val("");
-                    reloadSessionEmail();
-                } else {
-                    $(this).attr("disabled", false);
-                    $(this).addClass("error");
-                }
-            })
-        } else {
-            $(this).addClass("error");
-        }
-    })
-
-    LightningChat.onMessageLoaded = function(messages){
-        $("#bubble-container").html("");
-        for(i in messages){
-            if(messages[i].sender == "visitor"){
-                var bubble_class = "right-bubble";
-            } else {
-                var bubble_class = "left-bubble";
-            }
-            $("#bubble-container").append("<div class='" + bubble_class + "'><p>" + messages[i].message + "</p></div>");
-        }
-        $('#bubble-container').scrollTop($('#bubble-container')[0].scrollHeight);
-
-    }
-    LightningChat.onNewMessage = function(message){
-        // console.log("new message " + message.message);
-        if(message.sender == "visitor"){
-            var bubble_class = "right-bubble";
-        } else {
-            var bubble_class = "left-bubble";
-        }
-        $("#bubble-container").append("<div class='" + bubble_class + "'><p>" + message.message + "</p></div>");
-        $('#bubble-container').scrollTop($('#bubble-container')[0].scrollHeight);
-    }
-    LightningChat.onStatusChange = function(stat) {
-        if(stat == 0){
-            $("#lightning-chat-container").addClass("closed");
-        } else {
-            $("#lightning-chat-container").removeClass("closed");
-        }
-    }
-    $('#lighting-message-area').keyup(function(e){
-        if(e.keyCode == 13)
-        {
-            if($("#lighting-message-area").val() != ""){
-                var message = $("#lighting-message-area").val();
-                $("#lighting-message-area").val("");
-                LightningChat.sendMessage(message, function(result){
-                    if(!result){
-                        alert("failed to send message");
-                    }
-                });
-            }
-        }
-    });
-
-    $("#begin-chat-button").click(function(){
-        $("#content-container").toggleClass("not-shown");
-        $(this).toggleClass("active");
-    });
-    // $("#send-button").click(function(){
-    //     if($("#message-box").val() != ""){
-    //         var message = $("#message-box").val();
-    //         $("#message-box").val("");
-    //         LightningChat.sendMessage(message, function(result){
-    //             if(!result){
-    //                 alert("failed to send message");
+    // $("#new-chat-controls").click(function(){
+    //     LightningChat.setCookie("lcskey", "", -1);
+    //     LightningChat.init(function(){
+    //         reloadSessionEmail();
+    //     });
+    // })
+    // $("#lightning-chat-email-box").blur(function(){
+    //     if(LightningChat.validateEmail($(this).val())){
+    //         // alert("year!");
+    //         $(this).removeClass("error");
+    //         $(this).attr("disabled", true);
+    //         LightningChat.setSessionEmail($(this).val(), function(result){
+    //             if(result){
+    //                 $("#lightning-chat-email-box").val("");
+    //                 reloadSessionEmail();
+    //             } else {
+    //                 $(this).attr("disabled", false);
+    //                 $(this).addClass("error");
     //             }
-    //         });
+    //         })
+    //     } else {
+    //         $(this).addClass("error");
     //     }
+    // })
+
+    // LightningChat.onMessageLoaded = function(messages){
+    //     $("#bubble-container").html("");
+    //     for(i in messages){
+    //         if(messages[i].sender == "visitor"){
+    //             var bubble_class = "right-bubble";
+    //         } else {
+    //             var bubble_class = "left-bubble";
+    //         }
+    //         $("#bubble-container").append("<div class='" + bubble_class + "'><p>" + messages[i].message + "</p></div>");
+    //     }
+    //     $('#bubble-container').scrollTop($('#bubble-container')[0].scrollHeight);
+
+    // }
+    // LightningChat.onNewMessage = function(message){
+    //     // console.log("new message " + message.message);
+    //     if(message.sender == "visitor"){
+    //         var bubble_class = "right-bubble";
+    //     } else {
+    //         var bubble_class = "left-bubble";
+    //     }
+    //     $("#bubble-container").append("<div class='" + bubble_class + "'><p>" + message.message + "</p></div>");
+    //     $('#bubble-container').scrollTop($('#bubble-container')[0].scrollHeight);
+    // }
+    // LightningChat.onStatusChange = function(stat) {
+    //     if(stat == 0){
+    //         $("#lightning-chat-container").addClass("closed");
+    //     } else {
+    //         $("#lightning-chat-container").removeClass("closed");
+    //     }
+    // }
+    // $('#lighting-message-area').keyup(function(e){
+    //     if(e.keyCode == 13)
+    //     {
+    //         if($("#lighting-message-area").val() != ""){
+    //             var message = $("#lighting-message-area").val();
+    //             $("#lighting-message-area").val("");
+    //             LightningChat.sendMessage(message, function(result){
+    //                 if(!result){
+    //                     alert("failed to send message");
+    //                 }
+    //             });
+    //         }
+    //     }
+    // });
+
+    // $("#begin-chat-button").click(function(){
+    //     $("#content-container").toggleClass("not-shown");
+    //     $(this).toggleClass("active");
     // });
 </script>

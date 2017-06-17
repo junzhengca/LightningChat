@@ -6,6 +6,7 @@ var LightningChat = {
     devMode: false,
     sessionKey: false,
     apiBase: "",
+    interfaceResources: {},
     messages: [],
     status:null,
     init: function(callback){
@@ -183,6 +184,70 @@ var LightningChat = {
         d.setTime(d.getTime() + (exdays*24*60*60*1000));
         var expires = "expires="+ d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
+    // Utility methods about DOM elements
+    dom: {
+        // Select a DOM element by ID
+        id:function(name) {
+            return document.getElementById(name);
+        },
+        // Select by ID and return LightningDomObject
+        lightningId:function(name){
+            return new LightningChat.LightningDomObject(document.getElementById(name));
+        },
+        // Select a DOM element by tag
+        tag:function(name) {
+            return document.getElementsByTagName(name);
+        },
+        // Remove a class from DOM
+        removeClass:function(dom, name) {
+            dom.classList.remove(name);
+        },
+        // Add a class to DOM
+        addClass:function(dom, name){
+            dom.className += ' ' + name;
+        },
+        // Toggle a class
+        toggleClass:function(dom, name){
+            if(LightningChat.dom.hasClass(dom, name)){
+                LightningChat.dom.removeClass(dom, name);
+            } else {
+                LightningChat.dom.addClass(dom, name);
+            }
+        },
+        // Check if has class
+        hasClass:function(dom, name) {
+            return (' ' + dom.className + ' ').indexOf(' ' + name + ' ') > -1;
+        }
+    },
+    LightningDomObject: function(dom){
+        this.dom = dom;
+        this.addClass = function(name){
+            this.dom.className += ' ' + name;
+            if(this.hasClass(name)){
+                this.removeClass(name);
+            } else {
+                this.addClass(name);
+            }
+            return this;
+        }
+        this.toggleClass = function(name){
+            return this;
+        }
+        this.hasClass = function(name){
+            return (' ' + this.dom.className + ' ').indexOf(' ' + name + ' ') > -1;
+        }
+        this.removeClass = function(name){
+            this.dom.classList.remove(name);
+            return this;
+        }
+        this.setContent = function(content){
+            this.dom.innerHTML = content;
+            return this;
+        }
+        this.appendContent = function(content){
+            this.dom.innerHTML += content;
+        }
     },
     ajax: {
         x:function () {

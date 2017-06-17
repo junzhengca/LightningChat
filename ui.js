@@ -1,11 +1,15 @@
 // LightningChat.devMode = false; // !!@!!UNCOMMENTONCOMPILE
 LightningChat.devMode = true; // !!@!!DELETEONCOMPILE
-LightningChat.apiBase = "http://localhost:3000";
-$("body").append('<link href="https://ssl.jackzh.com/file/css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');
+
+// Load fontawesome
+document.body.innerHTML += '<link href="https://ssl.jackzh.com/file/css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />';
 
 // Load UI HTML
-LightningChat.ajax.get("ui.html", {}, function(data){
-    $("body").append(data);
+LightningChat.ajax.get(LightningChat.interfaceResources.htmlPath, {}, function(data){
+    document.body.innerHTML += data;
+    // Replace text with all custom config variables
+    LightningChat.dom.lightningId("lightning-chat-welcome-message").setContent(LightningChat.interfaceResources.welcomeMessage);
+    LightningChat.dom.lightningId("lightning-chat-email-message").setContent(LightningChat.interfaceResources.emailMessage);
     lightningChatInitialize();
 })
 
@@ -23,57 +27,63 @@ function lightningChatInitialize(){
     LightningChat.init(function(){
         reloadSessionEmail();
     });
+
+    // Reload session email status
     function reloadSessionEmail(){
         LightningChat.loadSessionEmail(function(email){
             if(!email){
-                $("#lightning-chat-email-form").slideDown();
-                $("#lightning-chat-email-status").slideUp();
+                LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-email-form"), "lightning-chat-hidden");
+                LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-email-status"), "lightning-chat-hidden");
             } else {
-                $("#lightning-chat-email-form").slideUp();
-                $("#lightning-chat-email-status label").html("Hi! " + email);
-                $("#lightning-chat-email-status").slideDown();
+                LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-email-form"), "lightning-chat-hidden");
+                LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-email-status"), "lightning-chat-hidden");
+                LightningChat.dom.id("lightning-chat-email-status-label").innerHTML = "Hi! " + email;
             }
         });
     }
 
-    $("#new-chat-controls").click(function(){
+    LightningChat.dom.id("new-chat-controls").onclick = function(){
         LightningChat.setCookie("lcskey", "", -1);
         LightningChat.init(function(){
             reloadSessionEmail();
         });
-    })
-    $("#lightning-chat-email-box").blur(function(){
-        if(LightningChat.validateEmail($(this).val())){
-            // alert("year!");
-            $(this).removeClass("error");
-            $(this).attr("disabled", true);
-            LightningChat.setSessionEmail($(this).val(), function(result){
+    };
+
+
+    LightningChat.dom.id("lightning-chat-email-box").onblur = function(){
+        if(LightningChat.validateEmail(LightningChat.dom.id("lightning-chat-email-box").value)){
+            LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-email-box"), "error");
+            LightningChat.dom.id("lightning-chat-email-box").disabled = true;
+            LightningChat.setSessionEmail(LightningChat.dom.id("lightning-chat-email-box").value, function(result){
                 if(result){
-                    $("#lightning-chat-email-box").val("");
+                    LightningChat.dom.id("lightning-chat-email-box").value = "";
                     reloadSessionEmail();
                 } else {
-                    $(this).attr("disabled", false);
-                    $(this).addClass("error");
+                    LightningChat.dom.id("lightning-chat-email-box").disabled = false;
+                    LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-email-box"), "error");
                 }
             })
         } else {
-            $(this).addClass("error");
+            LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-email-box"), "error");
         }
-    })
+    };
 
     LightningChat.onMessageLoaded = function(messages){
-        $("#bubble-container").html("");
+        LightningChat.dom.id("bubble-container").innerHTML = "";
         for(i in messages){
             if(messages[i].sender == "visitor"){
                 var bubble_class = "right-bubble";
             } else {
                 var bubble_class = "left-bubble";
             }
-            $("#bubble-container").append("<div class='" + bubble_class + "'><p>" + messages[i].message + "</p></div>");
+            LightningChat.dom.id("bubble-container").innerHTML += "<div class='" + bubble_class + "'><p>" + messages[i].message + "</p></div>";
         }
-        $('#bubble-container').scrollTop($('#bubble-container')[0].scrollHeight);
+
+        LightningChat.dom.id("bubble-container").scrollTo(0, LightningChat.dom.id("bubble-container").scrollHeight);
 
     }
+
+
     LightningChat.onNewMessage = function(message){
         // console.log("new message " + message.message);
         if(message.sender == "visitor"){
@@ -81,22 +91,24 @@ function lightningChatInitialize(){
         } else {
             var bubble_class = "left-bubble";
         }
-        $("#bubble-container").append("<div class='" + bubble_class + "'><p>" + message.message + "</p></div>");
-        $('#bubble-container').scrollTop($('#bubble-container')[0].scrollHeight);
+        LightningChat.dom.id("bubble-container").innerHTML += "<div class='" + bubble_class + "'><p>" + message.message + "</p></div>";
+        LightningChat.dom.id("bubble-container").scrollTo(0, LightningChat.dom.id("bubble-container").scrollHeight);
     }
+
     LightningChat.onStatusChange = function(stat) {
         if(stat == 0){
-            $("#lightning-chat-container").addClass("closed");
+            LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-container"), "closed");
         } else {
-            $("#lightning-chat-container").removeClass("closed");
+            LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-container"), "closed");
         }
     }
-    $('#lighting-message-area').keyup(function(e){
+    
+    LightningChat.dom.id("lighting-message-area").onkeyup = function(e){
         if(e.keyCode == 13)
         {
-            if($("#lighting-message-area").val() != ""){
-                var message = $("#lighting-message-area").val();
-                $("#lighting-message-area").val("");
+            if(LightningChat.dom.id("lighting-message-area").value != ""){
+                var message = LightningChat.dom.id("lighting-message-area").value;
+                LightningChat.dom.id("lighting-message-area").value = "";
                 LightningChat.sendMessage(message, function(result){
                     if(!result){
                         alert("failed to send message");
@@ -104,10 +116,10 @@ function lightningChatInitialize(){
                 });
             }
         }
-    });
+    };
 
-    $("#begin-chat-button").click(function(){
-        $("#content-container").toggleClass("not-shown");
-        $(this).toggleClass("active");
-    });
+    LightningChat.dom.id("lightning-chat-begin-chat-button").onclick = function(){
+        LightningChat.dom.toggleClass(LightningChat.dom.id("lightning-chat-content-container"), "not-shown");
+        LightningChat.dom.toggleClass(LightningChat.dom.id("lightning-chat-begin-chat-button"), "active");
+    }
 }

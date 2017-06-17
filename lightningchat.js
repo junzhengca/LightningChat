@@ -26,8 +26,3 @@ function lightningChatLoadCSS(url){
 
     (document.getElementsByTagName('HEAD')[0]||document.body).appendChild(el);
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-   lightningChatLoadJS("sdk.js");
-   lightningChatLoadJS("ui.js");
-});

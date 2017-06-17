@@ -31,8 +31,22 @@ All agents should get a message like this:
 ![](https://i.imgur.com/BB0fCED.png)
 
 ### Setup (Website)
-* Link `sdk.js` on your site.
-* You can copy&paste the code in `test.html`, or you can make your own widget. 
+* Clone `compiled` to your project folder.
+* Add the following code towards the end of your HTML page.
+```html
+<script type="text/javascript">
+    lightningChatApiBase = "<your api access point>";
+    lightningChatInterfaceResources = {
+        htmlPath:"<path to ui.html>",
+        welcomeMessage: "Welcome to AMACSS at UTSC, how can we help?",
+        emailMessage: "What is you email address? if you are away, you will recieve an email notification when we reply."
+    };
+</script>
+<script src="<path to lc.min.js>"></script>
+```
+* Change the variables as you wish.
+* Done.
+
 
 ### How to use
 

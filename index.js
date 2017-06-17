@@ -53,6 +53,19 @@ bot.api.users.list({}, function(err, list){
     console.log(settings.agents);
 })
 
+// Load channel ID
+bot.api.channels.list({}, (err, list) => {
+    list = list.channels;
+    for(i in list){
+        if (list[i].name == settings.channel.name){
+            settings.channel.id = list[i].id;
+            break;
+        }
+    }
+    console.log("Channel ID loaded");
+    console.log(settings.channel);
+})
+
 // Used to initialize database
 // db.serialize(function () {
 //     try {
@@ -370,6 +383,15 @@ function assignSessionAgent(id, agent, callback){
     db.serialize(() => {
         var stmt = db.prepare('UPDATE sessions SET assigned_agent=? WHERE id=?');
         stmt.run(agent, id);
+        agent_id = findAgent(agent).id;
+        getSessionInfo(id, (info) => {
+            if(info){
+                sendMessage(info.identifier, agent, "You are assigned to " + agent + ". How can we help?", () => {});
+            } else {
+                console.log("This should **NEVER** happen :)");
+            }
+        })
+        
         callback();
     });
 }
@@ -464,6 +486,27 @@ app.get('/sessions/:session_id', (req, res) => {
     })
 })
 
+app.post('/sessions/:session_id/assigned_agent/:agent_name', (req, res) => {
+    getSessionInfoByIdentifier(req.params.session_id, (info) => {
+        if(info){
+            if(info.assigned_agent){
+                res.send({status:"already assigned"});
+            } else {
+                agent = findAgent(req.params.agent_name);
+                if(agent){
+                    assignSessionAgent(info.id, agent.name, () => {
+                        res.send({status:"ok"});
+                    })
+                } else {
+                    res.send({status:"notfound"});
+                }
+            }
+        } else {
+            res.send({status:"notfound"});
+        }
+    })
+});
+
 // Get session information
 app.get('/sessions/:session_id/info', (req, res) => {
     getSessionInfoByIdentifier(req.params.session_id, (info) => {
@@ -514,6 +557,15 @@ app.post('/sessions/:session_id', (req, res) => {
                                 channel:agent_info.id
                             })
                         }
+                    } else {
+                        // If there is no assigned agent, we attempt to post a message to specified channel
+                        bot.say({
+                            text:"*visitor* from *session `" + info.id + "`* \n"
+                                 + "> " + req.body.message + "\n"
+                                 + "*NO AGENT ASSIGNED!*\n"
+                                 + "Assign yourself by typing `assign " + info.id  +" <your username>`",
+                            channel:settings.channel.id
+                        })
                     }
                 });
             } else {

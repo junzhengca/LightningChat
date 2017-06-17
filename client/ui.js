@@ -102,6 +102,35 @@ function lightningChatInitialize(){
             LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-container"), "closed");
         }
     }
+
+    LightningChat.onInitialQuizShouldStart = function(quiz){
+        LightningChat.dom.addClass(LightningChat.dom.id("bubble-container"), "lightning-chat-hidden");
+        LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-controls"), "lightning-chat-hidden");
+        LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-initial-quiz-container"), "lightning-chat-hidden");
+
+    }
+
+    LightningChat.onInitialQuizQuestionShouldChange = function(question){
+        console.log(question);
+        if(question.choice){
+            LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.question;
+            LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
+            for(i in question.choice){
+                LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML += "<li onclick='LightningChat.runInitialQuizAction(" + i + ")'>" + question.choice[i] + "</li>";
+            }
+        } else {
+            LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.message;
+            LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
+        }
+    }
+
+    LightningChat.onInitialQuizShouldEnd = function(quiz){
+        LightningChat.dom.removeClass(LightningChat.dom.id("bubble-container"), "lightning-chat-hidden");
+        LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-controls"), "lightning-chat-hidden");
+        LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-initial-quiz-container"), "lightning-chat-hidden");
+    }
+
+    
     
     LightningChat.dom.id("lighting-message-area").onkeyup = function(e){
         if(e.keyCode == 13)

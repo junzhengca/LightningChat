@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        
+    </head>
+    <body>
+        
+    </body>
+</html>
+<script type="text/javascript">
+    lightningChatApiBase = "http://localhost:3000";
+    lightningChatInterfaceResources = {
+        htmlPath:"ui.html",
+        welcomeMessage: "Welcome to AMACSS at UTSC, how can we help?",
+        emailMessage: "What is you email address? if you are away, you will recieve an email notification when we reply."
+    };
+    lightningChatInitialQuiz = [
+        {
+            question:"Hi, which category can we help you with?",
+            choice:[
+                "Academic",
+                "Events",
+                "General"
+            ],
+            consequence:[
+                "assign junzheng,to 2",
+                "to 1",
+                "assign junzheng,to 2"
+            ]
+        },
+        {
+            question:"What types of event are you looking for?",
+            choice:[
+                "Hackathons",
+                "Study Groups"
+            ],
+            consequence:[
+                "assign junzheng,to 2",
+                "to 0"
+            ]
+        },
+        {
+            message:"Thank you, you will be connected with one of our agents.",
+            choice:null,
+            time:2000
+        }
+    ];
+</script>
+<script src="lc.min.js"></script>

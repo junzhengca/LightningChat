@@ -1,2 +1,0 @@
-LightningChat.apiBase = lightningChatApiBase;
-LightningChat.interfaceResources = lightningChatInterfaceResources;

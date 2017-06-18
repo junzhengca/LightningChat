@@ -1,14 +1,6 @@
 # ⚡ LightningChat
 A lightning fast / self-hosted website chat system for small teams.
 
-Developed at the University of Toronto Scarborugh, LightningChat is intended to be an open-source alternative to Drift and Intercom. Now used on AMACSS's offical website.
-
------------------------------------
-
-一个为小团队定制的轻量自托管式网站实时聊天系统。
-
-在多伦多大学（士嘉堡校区）开发，LightningChat是一个Drift和Intercom的开源版。现在在AMACSS的官网上使用。
-
 -----------------------------------
 ## Download
 LightningChat is still under heavy development. You can download the source now, but it might not be useable.

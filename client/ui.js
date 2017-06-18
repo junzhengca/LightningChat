@@ -20,7 +20,7 @@ if(LightningChat.devMode){
     lightningChatLoadJS("https://ssl.jackzh.com/file/js/less-js/less.min.js");
 } else {
     // Otherwise, load css
-    lightningChatLoadCSS("style.css");
+    lightningChatLoadCSS(lightningChatInterfaceResources.cssPath);
 }
 
 function lightningChatInitialize(){

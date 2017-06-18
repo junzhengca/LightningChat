@@ -7,6 +7,7 @@
 }
 
 #lightning-chat-container {
+    z-index: 99;
     position: fixed;
     right: 20px;
     bottom: 20px;
@@ -39,6 +40,7 @@
     #lightning-chat-content-container {
         background-color: white;
         width: 400px;
+        max-width: 80vw;
         position: absolute;
         bottom: 80px;
         right: 0;
@@ -176,7 +178,7 @@
     bottom: 50px;
     left: 0;
     height: 400px;
-    max-height: 70%;
+    max-height: 30vh;
     overflow-y: scroll;
     padding-bottom: 20px;
 }

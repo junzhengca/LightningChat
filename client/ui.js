@@ -79,7 +79,7 @@ function lightningChatInitialize(){
             LightningChat.dom.id("bubble-container").innerHTML += "<div class='" + bubble_class + "'><p>" + messages[i].message + "</p></div>";
         }
 
-        LightningChat.dom.id("bubble-container").scrollTo(0, LightningChat.dom.id("bubble-container").scrollHeight);
+        LightningChat.dom.id("bubble-container").scrollTop = LightningChat.dom.id("bubble-container").scrollHeight;
 
     }
 
@@ -92,7 +92,7 @@ function lightningChatInitialize(){
             var bubble_class = "left-bubble";
         }
         LightningChat.dom.id("bubble-container").innerHTML += "<div class='" + bubble_class + "'><p>" + message.message + "</p></div>";
-        LightningChat.dom.id("bubble-container").scrollTo(0, LightningChat.dom.id("bubble-container").scrollHeight);
+        LightningChat.dom.id("bubble-container").scrollTop = LightningChat.dom.id("bubble-container").scrollHeight;
     }
 
     LightningChat.onStatusChange = function(stat) {

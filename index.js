@@ -3,6 +3,7 @@ const express = require('express')
 var body_parser = require('body-parser')
 const app = express()
 app.use(body_parser.json())
+app.use('/client', express.static('client'))
 // Load colors
 var colors = require('colors')
 // Load SQL database

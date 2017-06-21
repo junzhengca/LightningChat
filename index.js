@@ -72,6 +72,7 @@ function initialize(){
                 }
             }
             console.log("✅ User IDs loaded".green.bold);
+            console.log(settings.agents);
             callback();
         })
     }
@@ -309,12 +310,14 @@ controller.hears(['^assign (.*) (.*)$'], 'direct_message,direct_mention,mention'
 
 function findAgent(name) {
     for(i in settings.agents){
+        // console.log(i);
+        // console.log("record name " + settings.agents[i].name);
+        // console.log("input " + name);
         if (settings.agents[i].name == name){
             return settings.agents[i];
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 controller.hears(['status'], 'direct_message,direct_mention,mention', (bot, message) => {
@@ -491,6 +494,10 @@ app.get('/sessions/:session_id', (req, res) => {
 })
 
 app.post('/sessions/:session_id/assigned_agent/:agent_name', (req, res) => {
+    console.log("POST request at /sessions/:session_id/asigned_agent/:agent_name".green.bold)
+    console.log("$session_id = " + req.params.session_id)
+    console.log("$agent_name = " + req.params.agent_name)
+
     getSessionInfoByIdentifier(req.params.session_id, (info) => {
         if(info){
             if(info.assigned_agent){
@@ -499,13 +506,16 @@ app.post('/sessions/:session_id/assigned_agent/:agent_name', (req, res) => {
                 agent = findAgent(req.params.agent_name);
                 if(agent){
                     assignSessionAgent(info.id, agent.name, () => {
+                        console.log("RESPONDED ok".green.bold)
                         res.send({status:"ok"});
                     })
                 } else {
+                    console.log("RESPONDED agent notfound".red.bold)
                     res.send({status:"notfound"});
                 }
             }
         } else {
+            console.log("RESPONDED session notfound".red.bold)
             res.send({status:"notfound"});
         }
     })

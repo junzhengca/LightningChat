@@ -27,6 +27,11 @@
             outline: none;
             border: none;
             border-bottom: rgba(255,255,255,0.3) 2px solid;
+            font-size: 13px;
+            &:hover {
+                border:none;
+                box-shadow: none;
+            }
             &.error {
                 border-bottom: red 2px solid;
             }
@@ -221,4 +226,8 @@
     display: none;
     opacity: 0;
     transition: all ease 0.3s;
+}
+
+#lightning-chat-initial-quiz-message {
+    padding: 20px;
 }

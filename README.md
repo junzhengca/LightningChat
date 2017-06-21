@@ -1,4 +1,7 @@
 # ⚡ LightningChat
+
+![](https://travis-ci.org/junthehacker/LightningChat.svg?branch=master)
+
 A lightning fast / self-hosted website chat system for small teams.
 
 -----------------------------------

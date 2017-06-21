@@ -8,5 +8,11 @@ module.exports = {
             name:"slack username",
             id:false // Keep this false, will autoload upon start
         }
-    ]
+    ],
+    // Which channel will unassigned chat be posted
+    channel:{
+        name:"your channel name",
+        id:false // Keep this false
+    },
+    online_notification: false
 };

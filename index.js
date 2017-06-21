@@ -1,70 +1,97 @@
+// Load Express
 const express = require('express')
+var body_parser = require('body-parser')
 const app = express()
-var bodyParser = require('body-parser')
-app.use(bodyParser.json())
+app.use(body_parser.json())
+// Load colors
+var colors = require('colors')
+// Load SQL database
 var sqlite3 = require('sqlite3').verbose()
 var db = new sqlite3.Database('messages.db')
-var Botkit = require('botkit');
-var os = require('os');
-var settings = require('./settings.js');
+var botkit = require('botkit')
+var os = require('os')
+var settings = require('./settings.js')
 
 // Initialize Mailgun
 var mailgun = require('mailgun-js')({apiKey: settings.mailgun_api_key, domain: settings.mail_domain});
-
-// Initialize Botkit
-var controller = Botkit.slackbot({
-    debug: false,
-});
-
+var controller = null;
 var bot = null;
-function startRtm() {
-    bot = controller.spawn({
-        token: settings.slack_bot_key
-    }).startRTM(function(err,bot,payload) {
-        if (err) {
-            console.log('Failed to start RTM')
-            return setTimeout(startRtm, 60000);
-        }
-        console.log("RTM started!");
+var bot_utility = require("./bot_utility.js");
+
+initialize();
+
+
+function initialize(){
+    // Function to start the RTM server.
+    function startRtm(callback) {
+        bot = controller.spawn({
+            token: settings.slack_bot_key
+        }).startRTM(function(err,bot,payload) {
+            if (err) {
+                console.log('❌ Failed to start RTM')
+                return setTimeout(startRtm, 60000);
+            }
+            console.log("✅ RTM started!".green.bold);
+            callback();
+        });
+    }
+
+    function loadChannelId(callback){
+        // Load channel ID
+        bot.api.channels.list({}, (err, list) => {
+            list = list.channels;
+            for(i in list){
+                if (list[i].name == settings.channel.name){
+                    settings.channel.id = list[i].id;
+                    break;
+                }
+            }
+            console.log("✅ Channel ID loaded".green.bold);
+            callback();
+        });
+    }
+
+    function loadAgentIds(callback){
+        // Get all agent's user ID in slack
+        bot.api.users.list({}, function(err, list){
+            list = list.members;
+            for(i in list){
+                for (k in settings.agents){
+                    if (settings.agents[k].name == list[i].name){
+                        settings.agents[k].id = list[i].id;
+                        // If we want online notification
+                        if(settings.online_notification){
+                            bot.say({
+                                text:"🤖 LightingChat bot is now online!\nヽ(´ー｀)┌ Welcome! Agent " + list[i].name,
+                                channel:list[i].id
+                            })
+                        }
+                        
+                    }
+                }
+            }
+            console.log("✅ User IDs loaded".green.bold);
+            callback();
+        })
+    }
+
+    // Initialize Botkit
+    controller = botkit.slackbot({
+        debug: false
+    });
+
+    // Restart RTM once disconnected
+    controller.on('rtm_close', (bot, err) => {
+        startRtm(()=>{});
+    });
+    startRtm(()=>{
+        loadChannelId(()=>{
+            loadAgentIds(()=>{
+                console.log("⚡⚡ LightningChat initialized!".yellow.bold.italic)
+            });
+        });
     });
 }
-
-controller.on('rtm_close', function(bot, err) {
-    startRtm();
-});
-
-startRtm();
-
-// Get all agent's user ID in slack
-bot.api.users.list({}, function(err, list){
-    list = list.members;
-    for(i in list){
-        for (k in settings.agents){
-            if (settings.agents[k].name == list[i].name){
-                settings.agents[k].id = list[i].id;
-                bot.say({
-                    text:"🤖 LightingChat bot is now online!\nヽ(´ー｀)┌ Welcome! Agent " + list[i].name,
-                    channel:list[i].id
-                })
-            }
-        }
-    }
-    console.log("User IDs loaded");
-    console.log(settings.agents);
-})
-
-// Load channel ID
-bot.api.channels.list({}, (err, list) => {
-    list = list.channels;
-    for(i in list){
-        if (list[i].name == settings.channel.name){
-            settings.channel.id = list[i].id;
-            break;
-        }
-    }
-    console.log("Channel ID loaded");
-    console.log(settings.channel);
-})
 
 // Used to initialize database
 // db.serialize(function () {
@@ -76,32 +103,8 @@ bot.api.channels.list({}, (err, list) => {
 //     }
 // })
 
-function reactToMessage(bot, message){
-    bot.api.reactions.add({
-        timestamp: message.ts,
-        channel: message.channel,
-        name: 'white_check_mark',
-    }, function(err, res) {
-        if (err) {
-            bot.botkit.log('Failed to add emoji reaction :(', err);
-        }
-    });
-}
-
-function sendConfirmation(bot, message){
-    bot.api.reactions.add({
-        timestamp: message.ts,
-        channel: message.channel,
-        name: 'ok',
-    }, function(err, res) {
-        if (err) {
-            bot.botkit.log('Failed to add emoji reaction :(', err);
-        }
-    });
-}
-
 controller.hears(['^list$'], 'direct_message,direct_mention,mention', function(bot, message) {
-    reactToMessage(bot, message);
+   bot_utility.reactToMessage(bot, message);
     db.serialize(() => {
         db.all('SELECT * FROM sessions WHERE status=1', function (err, rows) {
             var msg = "*Open Sessions:*\n";
@@ -130,7 +133,7 @@ controller.hears(['^list$'], 'direct_message,direct_mention,mention', function(b
 });
 
 controller.hears(['^listall$'], 'direct_message,direct_mention,mention', function(bot, message) {
-    reactToMessage(bot, message);
+    bot_utility.reactToMessage(bot, message);
     db.serialize(() => {
         db.all('SELECT * FROM sessions', function (err, rows) {
             var msg = "*All Sessions:*\n";
@@ -164,7 +167,7 @@ controller.hears(['^listall$'], 'direct_message,direct_mention,mention', functio
 });
 
 controller.hears(['^help$'], 'direct_message,direct_mention,mention', (bot, message) => {
-    reactToMessage(bot, message);
+    bot_utility.reactToMessage(bot, message);
     controller.storage.users.get(message.user, function(err, user) {
         bot.api.users.info({user: message.user}, (error, response) => {
             let {name, real_name} = response.user;
@@ -191,7 +194,7 @@ controller.hears(
     ['^reply ([0-9]*) (.*)$'],
     'direct_message,direct_mention,mention',
     (bot, message) => {
-        reactToMessage(bot, message);
+        bot_utility.reactToMessage(bot, message);
         var session_id = message.match[1];
         var message = message;
         getSessionInfo(session_id, (info) => {
@@ -201,7 +204,7 @@ controller.hears(
                         let {name, real_name} = response.user;
                         console.log(name);
                         sendMessage(info.identifier, name, message.match[2], () => {
-                            sendConfirmation(bot, message);
+                            bot_utility.sendConfirmation(bot, message);
                             if(isOffline(info.offline_time) && info.email != "none"){
                                 var data = {
                                     from: 'Lightning <lightning@bot.amacss.org>',
@@ -234,7 +237,7 @@ controller.hears(
     ['^history (.*)$'],
     'direct_message,direct_mention,mention',
     (bot, message) => {
-        reactToMessage(bot, message);
+        bot_utility.reactToMessage(bot, message);
         var session_id = message.match[1];
         getSessionInfo(session_id, (info) => {
             if(info){
@@ -282,7 +285,7 @@ controller.hears(
 
 
 controller.hears(['^assign (.*) (.*)$'], 'direct_message,direct_mention,mention', (bot, message) => {
-    reactToMessage(bot, message);
+    bot_utility.reactToMessage(bot, message);
     console.log(message.match);
     // Check if agent is valid
     var agent_name = message.match[2];
@@ -314,7 +317,7 @@ function findAgent(name) {
 }
 
 controller.hears(['status'], 'direct_message,direct_mention,mention', (bot, message) => {
-    reactToMessage(bot, message);
+    bot_utility.reactToMessage(bot, message);
     controller.storage.users.get(message.user, (err, user) => {
         bot.api.users.info({user: message.user}, (error, response) => {
             let {name, real_name} = response.user;
@@ -423,7 +426,7 @@ function getAllMessages(id, callback){
 }
 
 controller.hears(['close (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
-    reactToMessage(bot, message);
+    bot_utility.reactToMessage(bot, message);
     getSessionInfo(message.match[1], (info) => {
         if(info){
             closeSession(message.match[1], () => {
@@ -436,7 +439,7 @@ controller.hears(['close (.*)'], 'direct_message,direct_mention,mention', functi
 });
 
 controller.hears(['open (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
-    reactToMessage(bot, message);
+    bot_utility.reactToMessage(bot, message);
     getSessionInfo(message.match[1], (info) => {
         if(info){
             openSession(message.match[1], () => {

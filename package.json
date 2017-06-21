@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "botkit": "^0.5.4",
+    "colors": "^1.1.2",
     "express": "^4.15.3",
     "mailgun-js": "^0.11.2",
     "nodemailer": "^4.0.1",

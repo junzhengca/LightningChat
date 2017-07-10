@@ -15,4 +15,4 @@ module.exports = {
         id:false // Keep this false
     },
     online_notification: false
-};
+}

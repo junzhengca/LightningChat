@@ -1,7 +1,7 @@
-site_name: LightningChat Docs
+site_name: LightningChat
 pages:
   - Home: index.md
   - Setup: setup.md
   - Server Configuration: server_config.md
   - Client Configuration: client_config.md
-theme: readthedocs
+theme: cinder

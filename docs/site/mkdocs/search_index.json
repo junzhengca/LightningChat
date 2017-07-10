@@ -1,0 +1,154 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "LightningChat Documentation\n\n\n\n\nCurrent Release: \n\u26a1Abhishek Lalawethika v0.0.4\n\n\nA lightning fast / self-hosted website chat system for small teams. Build by students at the University of Toronto Scarborough with \u2665.\n\n\nContributors\n\n\n\n\nProgramming\n\n\nJun Zheng\n\n\n\n\n\n\nDocumentation\n\n\nJun Zheng (English)\n\n\n\n\n\n\nSpecial Thanks\n\n\nMembers at AMACSS\n\n\n\n\n\n\n\n\nGet Started\n\n\n\n\nDeveloper?\n Check out our \ndeveloper setup guide\n\n\nUser?\n Check out our \nproduction setup guide",
+            "title": "Home"
+        },
+        {
+            "location": "/#lightningchat-documentation",
+            "text": "Current Release:  \u26a1Abhishek Lalawethika v0.0.4  A lightning fast / self-hosted website chat system for small teams. Build by students at the University of Toronto Scarborough with \u2665.",
+            "title": "LightningChat Documentation"
+        },
+        {
+            "location": "/#contributors",
+            "text": "Programming  Jun Zheng    Documentation  Jun Zheng (English)    Special Thanks  Members at AMACSS",
+            "title": "Contributors"
+        },
+        {
+            "location": "/#get-started",
+            "text": "Developer?  Check out our  developer setup guide  User?  Check out our  production setup guide",
+            "title": "Get Started"
+        },
+        {
+            "location": "/setup/",
+            "text": "Setup\n\n\nDevelopment Environment\n\n\nRequired Software\n\n\n\n\nA text editor\n\n\nA computer with macOS, Windows or Linux\n\n\nPython 3\n\n\nNode.js (v6.11.0+) w/ NPM\n\n\nSQLite 3\n\n\n\n\nRequired Services\n\n\n\n\nSlack with bot API key\n\n\nMailGun API key\n\n\n\n\nRunning Development Server\n\n\nFirst, copy \nsettings.template.js\n to \nsettings.js\n and add your API keys. \nDO NOT CHANGE \nsettings.template.js\n.\n More info about \nsettings.js\n can be found \nhere\n.\n\n\nThen copy \nmessages.template.db\n to \nmessages.db\n.\n\n\nRun \nnpm install\n and \nnode index.js\n.\n\n\nYou are good to go. Default app location is \nhttp://localhost:3000/\n.\n\n\nCompiling Client\n\n\nThere is a script called \ncompile.py\n in \nclient\n folder. Simply run \npython3 compile.py\n in the folder to compile.\n\n\nCompiled code are stored in \nclient/compiled\n folder.\n\n\nProduction Environment\n\n\nServer\n\n\nFirst, copy \nsettings.template.js\n to \nsettings.js\n and add your API keys. More info about \nsettings.js\n can be found \nhere\n.\n\n\nThen copy \nmessages.template.db\n to \nmessages.db\n.\n\n\nRun \nnpm install\n and \nnode index.js\n.\n\n\nYou are good to go. Default app location is \nhttp://localhost:3000/\n.\n\n\nClient\n\n\nSimply paste the following code into your webpage. More about client configuration can be found \nhere\n.\n\n\n<script type=\"text/javascript\">\n    lightningChatApiBase = \"<your api access point>\"\n    lightningChatInterfaceResources = {\n        htmlPath:\"<path to ui.html>\",\n        welcomeMessage: \"Welcome to AMACSS at UTSC, how can we help?\",\n        emailMessage: \"What is you email address? if you are away, you will recieve an email notification when we reply.\"\n    }\n    lightningChatInitialQuiz = []\n</script>\n<script src=\"<path to lc.min.js>\"></script>",
+            "title": "Setup"
+        },
+        {
+            "location": "/setup/#setup",
+            "text": "",
+            "title": "Setup"
+        },
+        {
+            "location": "/setup/#development-environment",
+            "text": "",
+            "title": "Development Environment"
+        },
+        {
+            "location": "/setup/#required-software",
+            "text": "A text editor  A computer with macOS, Windows or Linux  Python 3  Node.js (v6.11.0+) w/ NPM  SQLite 3",
+            "title": "Required Software"
+        },
+        {
+            "location": "/setup/#required-services",
+            "text": "Slack with bot API key  MailGun API key",
+            "title": "Required Services"
+        },
+        {
+            "location": "/setup/#running-development-server",
+            "text": "First, copy  settings.template.js  to  settings.js  and add your API keys.  DO NOT CHANGE  settings.template.js .  More info about  settings.js  can be found  here .  Then copy  messages.template.db  to  messages.db .  Run  npm install  and  node index.js .  You are good to go. Default app location is  http://localhost:3000/ .",
+            "title": "Running Development Server"
+        },
+        {
+            "location": "/setup/#compiling-client",
+            "text": "There is a script called  compile.py  in  client  folder. Simply run  python3 compile.py  in the folder to compile.  Compiled code are stored in  client/compiled  folder.",
+            "title": "Compiling Client"
+        },
+        {
+            "location": "/setup/#production-environment",
+            "text": "",
+            "title": "Production Environment"
+        },
+        {
+            "location": "/setup/#server",
+            "text": "First, copy  settings.template.js  to  settings.js  and add your API keys. More info about  settings.js  can be found  here .  Then copy  messages.template.db  to  messages.db .  Run  npm install  and  node index.js .  You are good to go. Default app location is  http://localhost:3000/ .",
+            "title": "Server"
+        },
+        {
+            "location": "/setup/#client",
+            "text": "Simply paste the following code into your webpage. More about client configuration can be found  here .  <script type=\"text/javascript\">\n    lightningChatApiBase = \"<your api access point>\"\n    lightningChatInterfaceResources = {\n        htmlPath:\"<path to ui.html>\",\n        welcomeMessage: \"Welcome to AMACSS at UTSC, how can we help?\",\n        emailMessage: \"What is you email address? if you are away, you will recieve an email notification when we reply.\"\n    }\n    lightningChatInitialQuiz = []\n</script>\n<script src=\"<path to lc.min.js>\"></script>",
+            "title": "Client"
+        },
+        {
+            "location": "/server_config/",
+            "text": "Server Configuration\n\n\nAll server configuration are done by modifying \nsettings.js\n.\n\n\nHere is the default content:\n\n\nmodule.exports = {\n    mailgun_api_key: \"key-xxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n    mail_domain: \"mail.example.com\",\n    slack_bot_key: \"xoxb-xxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxx\",\n    app_port: 3000,\n    agents:[\n        {\n            name:\"slack username\",\n            id:false // Keep this false, will autoload upon start\n        }\n    ],\n    // Which channel will unassigned chat be posted\n    channel:{\n        name:\"your channel name\",\n        id:false // Keep this false\n    },\n    online_notification: false\n}\n\n\n\n\nmailgun_api_key (required)\n\n\nYour MailGun API key, should be in the format of \nkey-xxxxxxxxxxxxxxxxxxxxxxxxxxxx\n.\n\n\nmail_domain (required)\n\n\nThe domain you wish to send email with, must be registered with MailGun.\n\n\nslack_bot_key (required)\n\n\nSlack bot API key.\n\n\napp_port (required)\n\n\nThe port you wish to run on. Default \n3000\n.\n\n\nagents[] (required)\n\n\nRegistered agents. Each agent has two properties, \nname\n and \nid\n, leave the \nid\n field \nfalse\n.\n\n\nchannel (required)\n\n\nThe channel bot will post on if no assigned agent is found.\n\n\nonline_notification (optional)\n\n\ntrue\n if you wish all agents to recieve a notification when the bot goes online. Default \nfalse\n.",
+            "title": "Server Configuration"
+        },
+        {
+            "location": "/server_config/#server-configuration",
+            "text": "All server configuration are done by modifying  settings.js .  Here is the default content:  module.exports = {\n    mailgun_api_key: \"key-xxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n    mail_domain: \"mail.example.com\",\n    slack_bot_key: \"xoxb-xxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxx\",\n    app_port: 3000,\n    agents:[\n        {\n            name:\"slack username\",\n            id:false // Keep this false, will autoload upon start\n        }\n    ],\n    // Which channel will unassigned chat be posted\n    channel:{\n        name:\"your channel name\",\n        id:false // Keep this false\n    },\n    online_notification: false\n}",
+            "title": "Server Configuration"
+        },
+        {
+            "location": "/server_config/#mailgun_api_key-required",
+            "text": "Your MailGun API key, should be in the format of  key-xxxxxxxxxxxxxxxxxxxxxxxxxxxx .",
+            "title": "mailgun_api_key (required)"
+        },
+        {
+            "location": "/server_config/#mail_domain-required",
+            "text": "The domain you wish to send email with, must be registered with MailGun.",
+            "title": "mail_domain (required)"
+        },
+        {
+            "location": "/server_config/#slack_bot_key-required",
+            "text": "Slack bot API key.",
+            "title": "slack_bot_key (required)"
+        },
+        {
+            "location": "/server_config/#app_port-required",
+            "text": "The port you wish to run on. Default  3000 .",
+            "title": "app_port (required)"
+        },
+        {
+            "location": "/server_config/#agents-required",
+            "text": "Registered agents. Each agent has two properties,  name  and  id , leave the  id  field  false .",
+            "title": "agents[] (required)"
+        },
+        {
+            "location": "/server_config/#channel-required",
+            "text": "The channel bot will post on if no assigned agent is found.",
+            "title": "channel (required)"
+        },
+        {
+            "location": "/server_config/#online_notification-optional",
+            "text": "true  if you wish all agents to recieve a notification when the bot goes online. Default  false .",
+            "title": "online_notification (optional)"
+        },
+        {
+            "location": "/client_config/",
+            "text": "Client Configuration\n\n\nClient configuration is coded to your HTML page, right before \n<script src=\"<path to lc.min.js>\"></script>\n.\n\n\nThe default configuration looks like this:\n\n\nlightningChatApiBase = \"<your api access point>\"\nlightningChatInterfaceResources = {\n  htmlPath:\"<path to ui.html>\",\n  welcomeMessage: \"Welcome to AMACSS at UTSC, how can we help?\",\n  emailMessage: \"What is you email address? if you are away, you will recieve an email notification when we reply.\"\n}\nlightningChatInitialQuiz = []\n\n\n\n\nlightningChatApiBase\n\n\nYour API access point, default should be \nyour-domain:3000\n.\n\n\nlightningChatInterfaceResources.htmlPath\n\n\nPath to \n/client/compiled/ui.html\n.\n\n\nlightningChatInterfaceResources.welcomeMessage\n\n\nInitial welcome message to be displayed to the visitor.\n\n\nlightningChatInterfaceResources.emailMessage\n\n\nInitial message to ask for email address.\n\n\nlightningChatInitialQuiz[]\n\n\nContains a series of question object. \nAPI IS VARY LIKELY TO CHANGE!!!!!\n\n\n\n\nquestion\n - The question to ask\n\n\nchoice\n - Array of choices\n\n\nconsequence\n - Array of consequences, for example \nassign user,to 2\n.\n\n\ntime\n - If \nchoice\n is \nnull\n, question will dismiss after this time.",
+            "title": "Client Configuration"
+        },
+        {
+            "location": "/client_config/#client-configuration",
+            "text": "Client configuration is coded to your HTML page, right before  <script src=\"<path to lc.min.js>\"></script> .  The default configuration looks like this:  lightningChatApiBase = \"<your api access point>\"\nlightningChatInterfaceResources = {\n  htmlPath:\"<path to ui.html>\",\n  welcomeMessage: \"Welcome to AMACSS at UTSC, how can we help?\",\n  emailMessage: \"What is you email address? if you are away, you will recieve an email notification when we reply.\"\n}\nlightningChatInitialQuiz = []",
+            "title": "Client Configuration"
+        },
+        {
+            "location": "/client_config/#lightningchatapibase",
+            "text": "Your API access point, default should be  your-domain:3000 .",
+            "title": "lightningChatApiBase"
+        },
+        {
+            "location": "/client_config/#lightningchatinterfaceresourceshtmlpath",
+            "text": "Path to  /client/compiled/ui.html .",
+            "title": "lightningChatInterfaceResources.htmlPath"
+        },
+        {
+            "location": "/client_config/#lightningchatinterfaceresourceswelcomemessage",
+            "text": "Initial welcome message to be displayed to the visitor.",
+            "title": "lightningChatInterfaceResources.welcomeMessage"
+        },
+        {
+            "location": "/client_config/#lightningchatinterfaceresourcesemailmessage",
+            "text": "Initial message to ask for email address.",
+            "title": "lightningChatInterfaceResources.emailMessage"
+        },
+        {
+            "location": "/client_config/#lightningchatinitialquiz",
+            "text": "Contains a series of question object.  API IS VARY LIKELY TO CHANGE!!!!!   question  - The question to ask  choice  - Array of choices  consequence  - Array of consequences, for example  assign user,to 2 .  time  - If  choice  is  null , question will dismiss after this time.",
+            "title": "lightningChatInitialQuiz[]"
+        }
+    ]
+}

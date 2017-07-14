@@ -94,6 +94,38 @@ module.exports = (db, settings) => {
     });
   }
 
+  this.getSessionInfoByIdentifier = function(identifier, callback){
+    db.serialize(() => {
+      var stmt = db.prepare('SELECT * FROM sessions WHERE identifier=?');
+      stmt.get(identifier, (err, row) => {
+        if(row){
+          callback(row);
+        } else {
+          callback(false);
+        }
+      });
+    });
+  }
+
+  this.setSessionEmailByIdentifier = function(identifier, email, callback){
+    if(this.validateEmail(email)){
+      db.serialize(() => {
+        var stmt = db.prepare('UPDATE sessions SET email=? WHERE identifier=?');
+        stmt.run(email, identifier);
+        callback(true);
+      });
+    } else {
+      callback(false);
+    }
+  }
+
+
+
+  this.validateEmail = function(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
 
   return this
 }

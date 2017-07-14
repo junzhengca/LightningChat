@@ -19,7 +19,17 @@ var controller = null;
 var bot = null;
 var bot_utility = require("./bot_utility.js");
 
-initialize();
+var util = require('./util')(db, settings)
+console.log(util)
+
+initialize()
+require('./middlewares/cors')(app)
+require('./listeners/list')(controller, util, bot_utility, db)
+require('./listeners/help')(controller, util, bot_utility, db)
+require('./listeners/message')(controller, util, bot_utility, db)
+require('./listeners/agent')(controller, util, bot_utility, db)
+require('./listeners/session')(controller, util, bot_utility, db)
+require('./listeners/archive')(controller, util, bot_utility, db)
 
 
 function initialize(){
@@ -67,7 +77,7 @@ function initialize(){
                                 channel:list[i].id
                             })
                         }
-                        
+
                     }
                 }
             }
@@ -105,257 +115,6 @@ function initialize(){
 //     }
 // })
 
-controller.hears(['^list$'], 'direct_message,direct_mention,mention', function(bot, message) {
-   bot_utility.reactToMessage(bot, message);
-    db.serialize(() => {
-        db.all('SELECT * FROM sessions WHERE status=1', function (err, rows) {
-            var msg = "*Open Sessions:*\n";
-            for(i in rows){
-                if(isOffline(rows[i].offline_time)){
-                    msg += "> (*#" + rows[i].id + "*) - " +  rows[i].identifier + " (offline) ";
-                } else {
-                    msg += "> (*#" + rows[i].id + "*) - " +   rows[i].identifier + " (online) ";
-                }
-                if(rows[i].assigned_agent == ""){
-                    msg += " NOT ASSIGNED\n";
-                } else {
-                    msg += " (" + rows[i].assigned_agent + ")\n"
-                }
-            }
-            if (rows.length == 0){
-                msg += "\nThere are no open sessions.\n";
-            }
-            // msg += "------------------------------\n"
-            msg += "Type `switch #{id}` to join a chat. ex. `switch #1`\n"
-            msg += "Type `close #{id}` to close a session. ex. `close #1`\n"
-            msg += "Type `help` for more information.\n"
-            bot.reply(message, msg);
-        })
-    })
-});
-
-controller.hears(['^listall$'], 'direct_message,direct_mention,mention', function(bot, message) {
-    bot_utility.reactToMessage(bot, message);
-    db.serialize(() => {
-        db.all('SELECT * FROM sessions', function (err, rows) {
-            var msg = "*All Sessions:*\n";
-            for(i in rows){
-                if(isOffline(rows[i].offline_time)){
-                    msg += "> (*#" + rows[i].id + "*) - " +  rows[i].identifier + " (offline)";
-                } else {
-                    msg += "> (*#" + rows[i].id + "*) - " +   rows[i].identifier + " (online)";
-                }
-                if(rows[i].assigned_agent == ""){
-                    msg += " NOT ASSIGNED ";
-                } else {
-                    msg += " (" + rows[i].assigned_agent + ") "
-                }
-                if(rows[i].status == 0){
-                    msg += " CLOSED\n"
-                } else {
-                    msg += " *OPEN*\n"
-                }
-            }
-            if (rows.length == 0){
-                msg += "\nThere are no open sessions.\n";
-            }
-            // msg += "------------------------------\n"
-            msg += "Type `switch {id}` to join a chat. ex. `switch 1`\n"
-            msg += "Type `close {id}` to close a session. ex. `close 1`\n"
-            msg += "Type `help` for more information.\n"
-            bot.reply(message, msg);
-        })
-    })
-});
-
-controller.hears(['^help$'], 'direct_message,direct_mention,mention', (bot, message) => {
-    bot_utility.reactToMessage(bot, message);
-    controller.storage.users.get(message.user, function(err, user) {
-        bot.api.users.info({user: message.user}, (error, response) => {
-            let {name, real_name} = response.user;
-            console.log(name, real_name);
-        })
-        bot.reply(message, 
-`*Basic commands*
-\`list\` - Get a list of open sessions
-\`listall\` - Get a list of all sessions
-\`history {id}\` - Preview a session's chat history
-\`close {id}\` - Close a session
-\`open {id}\` - Reopen a session
-\`status\` - See your current status
-\`assign {id} {agent}\` - Assign session to another agent
-\`reply {id} {message}\` - Reply to a session
-----------------------------------------------
-*LightningChat (c) Jun Z (junthehacker) 2017*
-*Built with ❤️ at the University of Toronto at Scarborough*
-`);
-    });
-});
-
-controller.hears(
-    ['^reply ([0-9]*) (.*)$'],
-    'direct_message,direct_mention,mention',
-    (bot, message) => {
-        bot_utility.reactToMessage(bot, message);
-        var session_id = message.match[1];
-        var message = message;
-        getSessionInfo(session_id, (info) => {
-            if(info){
-                if(info.status == 1){
-                    bot.api.users.info({user: message.user}, (error, response) => {
-                        let {name, real_name} = response.user;
-                        console.log(name);
-                        sendMessage(info.identifier, name, message.match[2], () => {
-                            bot_utility.sendConfirmation(bot, message);
-                            if(isOffline(info.offline_time) && info.email != "none"){
-                                var data = {
-                                    from: 'Lightning <lightning@bot.amacss.org>',
-                                    to: info.email,
-                                    subject: 'New reply from AMACSS',
-                                    text: "New reply from AMACSS - \n" +
-                                          message.match[2] + "\n" + 
-                                          "Please do not reply to this email. To see your chat history, visit amacss.org"
-                                };
-                                
-                                mailgun.messages().send(data, function (error, body) {
-                                    console.log(body);
-                                });
-                            }
-                        });
-                    });
-                } else {
-                    // Session already closed
-                    bot.reply(message, 'Session `' + session_id + '` is closed, please reopen it before replying.');
-                }
-            } else {
-                // Cannot find session
-                bot.reply(message, 'Session `' + session_id + '` does not exist :(');
-            }
-        })
-    }
-)
-
-controller.hears(
-    ['^history (.*)$'],
-    'direct_message,direct_mention,mention',
-    (bot, message) => {
-        bot_utility.reactToMessage(bot, message);
-        var session_id = message.match[1];
-        getSessionInfo(session_id, (info) => {
-            if(info){
-                getAllMessages(info.identifier, (messages) => {
-                    var msg = "*History for session #" + session_id + "*\n";
-                    msg += "*UUID:* " + info.identifier + "\n";
-                    msg += "*E-Mail:* " + info.email + "\n";
-                    msg += "*Message Count:* " + messages.length + " | ";
-                    msg += "*Agent:* " + info.assigned_agent + "\n";
-                    console.log(messages);
-                    // Check session open/closed status
-                    if(info.status == 0){
-                        msg += "*Status:* 🚫 CLOSED | "
-                    } else {
-                        msg += "*Status:* ✅ OPEN | "
-                    }
-                    // Check visitor online/offline status
-                    if(isOffline(info.offline_time)){
-                        msg += "OFFLINE\n";
-                    } else {
-                        msg += "ONLINE\n";
-                    }
-                    msg += "-----------------------------------\n"
-                    
-                    if(messages.length == 0){
-                        // No messages
-                        msg += "> No messages found";
-                    } else {
-                        for(i in messages){
-                            msg += "> *" + messages[i].sender + "*\n";
-                            msg += "> " + messages[i].message + "\n";
-                        }
-                    }
-                    bot.reply(message, msg);
-                });
-            } else {
-                // Session does not exist
-                bot.reply(message, 'Session `' + session_id + '` does not exist :(');
-            }
-        })
-    }
-);
-
-
-
-
-controller.hears(['^assign (.*) (.*)$'], 'direct_message,direct_mention,mention', (bot, message) => {
-    bot_utility.reactToMessage(bot, message);
-    console.log(message.match);
-    // Check if agent is valid
-    var agent_name = message.match[2];
-    var session_id  = message.match[1];
-    if(findAgent(agent_name)){
-        // Check if session exists
-        getSessionInfo(session_id, (info) => {
-            if(info){
-                assignSessionAgent(session_id, agent_name, () => {
-                    bot.reply(message, 'Session `' + session_id + '` assigned to ' + agent_name);
-                });
-            } else {
-                bot.reply(message, 'Session `' + session_id + '` does not exist :(');
-            }
-        })
-    } else {
-        bot.reply(message, 'Agent `' + agent_name + '` does not exist :(');
-    }
-});
-
-function findAgent(name) {
-    for(i in settings.agents){
-        // console.log(i);
-        // console.log("record name " + settings.agents[i].name);
-        // console.log("input " + name);
-        if (settings.agents[i].name == name){
-            return settings.agents[i];
-        }
-    }
-    return false;
-}
-
-controller.hears(['status'], 'direct_message,direct_mention,mention', (bot, message) => {
-    bot_utility.reactToMessage(bot, message);
-    controller.storage.users.get(message.user, (err, user) => {
-        bot.api.users.info({user: message.user}, (error, response) => {
-            let {name, real_name} = response.user;
-            if(findAgent(name)){
-                // User is an agent
-                bot.reply(message, "Welcome back, agent " + name + "!");
-            } else {
-                bot.reply(message, "Hi! " + name + ", unfortunately you are not an authenticated agent.\nPlease contact admin for more details.");
-            }
-        });
-    });
-});
-
-function isOffline(time){
-    let current_time = Math.round(+new Date()/1000);
-    if(time < current_time){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function getSessionInfo(id, callback){
-    db.serialize(() => {
-        var stmt = db.prepare('SELECT * FROM sessions WHERE id=?');
-        stmt.get(id, (err, row) => {
-            if(row){
-                callback(row);
-            } else {
-                callback(false);
-            }
-        });
-    });
-}
 
 function getSessionInfoByIdentifier(identifier, callback){
     db.serialize(() => {
@@ -370,38 +129,6 @@ function getSessionInfoByIdentifier(identifier, callback){
     });
 }
 
-function closeSession(id, callback){
-    db.serialize(() => {
-        var stmt = db.prepare('UPDATE sessions SET status=0 WHERE id=?');
-        stmt.run(id);
-        callback();
-    });
-}
-
-function openSession(id, callback){
-    db.serialize(() => {
-        var stmt = db.prepare('UPDATE sessions SET status=1 WHERE id=?');
-        stmt.run(id);
-        callback();
-    });
-}
-
-function assignSessionAgent(id, agent, callback){
-    db.serialize(() => {
-        var stmt = db.prepare('UPDATE sessions SET assigned_agent=? WHERE id=?');
-        stmt.run(agent, id);
-        agent_id = findAgent(agent).id;
-        getSessionInfo(id, (info) => {
-            if(info){
-                sendMessage(info.identifier, agent, "You are assigned to " + agent + ". How can we help?", () => {});
-            } else {
-                console.log("This should **NEVER** happen :)");
-            }
-        })
-        
-        callback();
-    });
-}
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -420,52 +147,14 @@ function setSessionEmailByIdentifier(identifier, email, callback){
     }
 }
 
-function getAllMessages(id, callback){
-    db.serialize(() => {
-        var stmt = db.prepare('SELECT * FROM messages WHERE identifier=?');
-        stmt.all(id, (err, rows) => {
-            callback(rows);
-        })
-    });
-}
-
-controller.hears(['close (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
-    bot_utility.reactToMessage(bot, message);
-    getSessionInfo(message.match[1], (info) => {
-        if(info){
-            closeSession(message.match[1], () => {
-                bot.reply(message, "Session `#" + message.match[1] + "` closed.");
-            })
-        } else {
-            bot.reply(message, "Session does not exist :(");
-        }
-    })
-});
-
-controller.hears(['open (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
-    bot_utility.reactToMessage(bot, message);
-    getSessionInfo(message.match[1], (info) => {
-        if(info){
-            openSession(message.match[1], () => {
-                bot.reply(message, "Session `#" + message.match[1] + "` reopened.");
-            })
-        } else {
-            bot.reply(message, "Session does not exist :(");
-        }
-    })
-});
 
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+
 
 app.post('/sessions', (req, res) => {
     var res = res;
     db.serialize(() => {
-        var session_id = genUUID();
+        var session_id = util.genUUID()
         var stmt = db.prepare('INSERT INTO sessions (email, identifier, status, offline_time, assigned_agent) VALUES (?,?,?,?,?)');
         var offline_time = Math.round(+new Date()/1000) + 10;
         stmt.run("none", session_id, 1, offline_time, "");
@@ -489,7 +178,7 @@ app.get('/sessions/:session_id', (req, res) => {
                 res.send({status:"notfound"});
             }
         })
-        
+
     })
 })
 
@@ -503,9 +192,9 @@ app.post('/sessions/:session_id/assigned_agent/:agent_name', (req, res) => {
             if(info.assigned_agent){
                 res.send({status:"already assigned"});
             } else {
-                agent = findAgent(req.params.agent_name);
+                agent = util.findAgent(req.params.agent_name);
                 if(agent){
-                    assignSessionAgent(info.id, agent.name, () => {
+                    util.assignSessionAgent(info.id, agent.name, () => {
                         console.log("RESPONDED ok".green.bold)
                         res.send({status:"ok"});
                     })
@@ -546,7 +235,7 @@ app.post('/sessions/:session_id/email', (req, res) => {
         // Bad request
         res.send({status:"error"});
     }
-    
+
 });
 
 // Post a new message to session
@@ -555,13 +244,13 @@ app.post('/sessions/:session_id', (req, res) => {
         getSessionInfoByIdentifier(req.params.session_id, (info) => {
             if(info){
                 // Insert message as guest
-                sendMessage(req.params.session_id, "visitor", req.body.message, () => {
+                util.sendMessage(req.params.session_id, "visitor", req.body.message, () => {
                     console.log("Message recieved " + req.params.session_id + " " + req.body.message);
                     res.send({status:"ok"});
                     // Post message to relevent channel
                     if(info.assigned_agent != ""){
                         // If there is an assigned agent
-                        var agent_info = findAgent(info.assigned_agent);
+                        var agent_info = util.findAgent(info.assigned_agent);
                         if(agent_info){
                             // Post message to agent's channel
                             bot.say({
@@ -587,21 +276,13 @@ app.post('/sessions/:session_id', (req, res) => {
                 res.send({status:"error"});
             }
         })
-        
+
     } else {
         res.send({status:"error"});
     }
 });
 
-function sendMessage(session_id, user_id, message, callback){
-    db.serialize(() => {
-        var stmt = db.prepare('INSERT INTO messages (identifier, sender, message) VALUES (?,?,?)');
-        stmt.run(session_id, user_id, message);
-        stmt.finalize();
-        // console.log("New session " + session_id + " opened.");
-        callback();
-    })
-}
+
 
 // Heartbeat for session
 app.get('/sessions/:session_id/heartbeat', (req, res) => {
@@ -620,12 +301,7 @@ app.listen(settings.app_port, function () {
     console.log('LightningChat running on port ' + settings.app_port);
 })
 
-function genUUID(){
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
-}
+
 
 
 

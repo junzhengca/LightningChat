@@ -176,7 +176,8 @@ var LightningChat = {
     },
     beginHeartBeat: function(){
         setInterval(function(){
-            LightningChat.ajax.get(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/heartbeat", {}, function(){
+            LightningChat.ajax.get(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/heartbeat", {}, function(data){
+              console.log(data)
                 console.log("Heartbeat finished at " + (new Date()));
             })
         }, 5000);

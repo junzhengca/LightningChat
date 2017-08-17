@@ -35,4 +35,34 @@ module.exports = (controller, util, bot_utility, db) => {
       });
     });
   });
+
+  controller.hears(['offline'], 'direct_message,direct_mention,mention', (bot, message) => {
+    bot_utility.reactToMessage(bot, message)
+    controller.storage.users.get(message.user, (err, user) => {
+      bot.api.users.info({user: message.user}, (error, response) => {
+        util.setOnlineStatus(false)
+        bot.reply(message, "LightningChat is now offline!")
+        let {name, real_name} = response.user
+        bot.say({
+          text:"LightningChat is now offline, turned off by " + name,
+          channel:util.getChannelId()
+        })
+      })
+    })
+  })
+
+  controller.hears(['online'], 'direct_message,direct_mention,mention', (bot, message) => {
+    bot_utility.reactToMessage(bot, message)
+    controller.storage.users.get(message.user, (err, user) => {
+      bot.api.users.info({user: message.user}, (error, response) => {
+        util.setOnlineStatus(true)
+        bot.reply(message, "LightningChat is now online!")
+        let {name, real_name} = response.user
+        bot.say({
+          text:"LightningChat is now online, turned on by " + name,
+          channel:util.getChannelId()
+        })
+      })
+    })
+  })
 }

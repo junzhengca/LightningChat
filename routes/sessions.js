@@ -95,7 +95,10 @@ module.exports = (app, util, db, bot) => {
       var offline_time = Math.round(+new Date()/1000) + 10;
       stmt.run(offline_time, session_id);
       stmt.finalize();
-      res.send(JSON.stringify({status:'ok'}));
+      res.send(JSON.stringify({
+        status:'ok',
+        online: util.getOnlineStatus()
+      }));
     })
   })
 

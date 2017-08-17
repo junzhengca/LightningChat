@@ -10,6 +10,7 @@ LightningChat.ajax.get(LightningChat.interfaceResources.htmlPath, {}, function(d
     // Replace text with all custom config variables
     LightningChat.dom.lightningId("lightning-chat-welcome-message").setContent(LightningChat.interfaceResources.welcomeMessage);
     LightningChat.dom.lightningId("lightning-chat-email-message").setContent(LightningChat.interfaceResources.emailMessage);
+    LightningChat.dom.lightningId("lightning-chat-offline-message").setContent(LightningChat.interfaceResources.offlineMessage);
     lightningChatInitialize();
 })
 
@@ -130,8 +131,20 @@ function lightningChatInitialize(){
         LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-initial-quiz-container"), "lightning-chat-hidden");
     }
 
-    
-    
+    LightningChat.onHeartBeat = function(){
+      // Show the LightningChat plugin only after first heartbeat
+      LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-begin-chat-button"), "lightning-chat-hidden")
+      if(LightningChat.isOnline){
+        LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-content-container"), "lightning-chat-offline")
+      } else {
+        if(!LightningChat.dom.hasClass(LightningChat.dom.id("lightning-chat-content-container"), "lightning-chat-offline")){
+          LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-content-container"), "lightning-chat-offline")
+        }
+      }
+    }
+
+
+
     LightningChat.dom.id("lighting-message-area").onkeyup = function(e){
         if(e.keyCode == 13)
         {

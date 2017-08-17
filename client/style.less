@@ -40,9 +40,74 @@
             padding-right: 20px;
             display: inline-block;
         }
+        #lightning-chat-offline-message {
+          display: none;
+        }
     }
 
     #lightning-chat-content-container {
+      #lightning-chat-email-form {
+        padding-top: 20px;
+      }
+      #lightning-chat-offline-email {
+        display: none;
+        padding: 20px;
+        input, textarea {
+          width: 100%;
+          border: none;
+          border-bottom: #1976D2 2px solid;
+          outline: none;
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+        textarea {
+          min-height: 100px;
+          padding-left: 0;
+          padding-right: 0;
+        }
+        label {
+          display: block;
+          opacity: 0.5;
+          padding-top: 10px;
+          font-size: 14px;
+        }
+        button {
+          background-color: #1976D2;
+          color: white;
+          border: none;
+          width: 100%;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          border-radius: 5px;
+          margin-top: 10px;
+          &:hover {
+            background-color: #0966C2;
+          }
+        }
+      }
+      &.lightning-chat-offline {
+        #lightning-chat-offline-email {
+          display: block;
+        }
+        #bubble-container {
+          display: none;
+        }
+        #lightning-chat-controls {
+          display: none;
+        }
+        #lightning-chat-title {
+          #lightning-chat-offline-message {
+            display: block;
+          }
+          #lightning-chat-welcome-message {
+            display: none;
+          }
+          #lightning-chat-email-form {
+            display: none;
+          }
+        }
+
+      }
         background-color: white;
         width: 400px;
         max-width: 80vw;
@@ -82,6 +147,12 @@
         box-shadow: rgba(0,0,0,0.2) 5px 5px 10px;
         cursor: pointer;
         transition: all ease 0.3s;
+        opacity: 1;
+        position: relative;
+        &.lightning-chat-hidden {
+          opacity: 0;
+          transition: all ease 0.3s;
+        }
         &:hover {
             background-color: #0D47A1;
             transition: all ease 0.3s;
@@ -195,7 +266,7 @@
 }
 
 #lightning-chat-container #bubble-container .right-bubble {
-    text-align: right;  
+    text-align: right;
 }
 
 #lightning-chat-container #bubble-container .left-bubble p,

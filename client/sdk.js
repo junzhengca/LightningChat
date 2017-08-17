@@ -11,6 +11,7 @@ var LightningChat = {
     status:null,
     initialQuiz:null,
     currentQuizQuestion:0,
+    isOnline:true,
     init: function(callback){
         LightningChat.sessionKey = LightningChat.getCookie("lcskey");
         LightningChat.getSession(this.sessionKey, function(result){
@@ -43,6 +44,7 @@ var LightningChat = {
     onInitialQuizShouldStart: function(quiz){},
     onInitialQuizQuestionShouldChange: function(question){},
     onInitialQuizShouldEnd: function(){},
+    onHeartBeat: function(){},
     runInitialQuizAction: function(choice_id){
         // Only proceed if choic_id is valid
         if(LightningChat.initialQuiz[LightningChat.currentQuizQuestion].choice.length - 1 < choice_id || choice_id < 0){
@@ -177,10 +179,12 @@ var LightningChat = {
     beginHeartBeat: function(){
         setInterval(function(){
             LightningChat.ajax.get(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/heartbeat", {}, function(data){
-              console.log(data)
-                console.log("Heartbeat finished at " + (new Date()));
+              data = JSON.parse(data)
+              LightningChat.isOnline = data.online
+              LightningChat.onHeartBeat()
+              console.log("Heartbeat finished at " + (new Date()));
             })
-        }, 5000);
+        }, 2000);
     },
     getCookie: function(cname) {
         var name = cname + "=";

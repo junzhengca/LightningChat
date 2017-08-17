@@ -1,9 +1,10 @@
 <div id="lightning-chat-container" class="lightning-chat-reset">
-    <button id="lightning-chat-begin-chat-button" class="lightning-chat-reset"><i class="fa fa-comments" aria-hidden="true"></i></button>
+    <button id="lightning-chat-begin-chat-button" class="lightning-chat-reset lightning-chat-hidden"><i class="fa fa-comments" aria-hidden="true"></i></button>
     <div id="lightning-chat-content-container" class="not-shown lightning-chat-reset">
         <div id="lightning-chat-title" class="lightning-chat-reset">
+            <button id="lightning-chat-start-over-controls">Start Over</button>
             <span id="lightning-chat-welcome-message">{{welcome message}}</span>
-            <br><br>
+            <span id="lightning-chat-offline-message">{{offline message}}</span>
             <div id="lightning-chat-email-form" class="lightning-chat-reset">
                 <label id="lightning-chat-email-message">{{email message}}</label>
                 <input type="text" name="email" class="lightning-chat-reset" id="lightning-chat-email-box" />
@@ -16,6 +17,16 @@
             <p id="lightning-chat-initial-quiz-message" class="lightning-chat-reset"></p>
             <ul id="lightning-chat-initial-quiz-choices">
             </ul>
+        </div>
+        <div id="lightning-chat-offline-email">
+          <label>What is your email address?</label>
+          <input type="email" placeholder="foo@bar.com" id="lightning-chat-send-email-from-box" />
+          <label>How can we help you?</label>
+          <textarea id="lightning-chat-send-email-message-box"></textarea>
+          <button id="lightning-chat-send-email-button">Send</button>
+          <p id="lightning-chat-offline-email-sent-message">
+            Email sent, we will get back to you as soon as possible.
+          </p>
         </div>
         <div id="bubble-container" class="lightning-chat-reset">
         </div>

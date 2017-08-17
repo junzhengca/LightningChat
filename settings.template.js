@@ -14,5 +14,9 @@ module.exports = {
         name:"your channel name",
         id:false // Keep this false
     },
-    online_notification: false
+    online_notification: false,
+    online: true,
+    mailing_list: [
+      "foo@bar.com"
+    ]
 }

@@ -45,38 +45,43 @@ var LightningChat = {
     onInitialQuizQuestionShouldChange: function(question){},
     onInitialQuizShouldEnd: function(){},
     onHeartBeat: function(){},
-    runInitialQuizAction: function(choice_id){
+    runInitialQuizAction: function(choice_id, cmd){
         // Only proceed if choic_id is valid
-        if(LightningChat.initialQuiz[LightningChat.currentQuizQuestion].choice.length - 1 < choice_id || choice_id < 0){
-            return false;
+        var consequence;
+        if(cmd){
+          consequence = cmd;
         } else {
+          if(LightningChat.initialQuiz[LightningChat.currentQuizQuestion].choice.length - 1 < choice_id || choice_id < 0){
+            return false;
+          } else {
             consequence = LightningChat.initialQuiz[LightningChat.currentQuizQuestion].consequence[choice_id];
-            consequence = consequence.split(",");
-            for(i in consequence){
-                cmd = consequence[i].split(" ");
-                if(cmd[0] == "to"){
-                    questionId = parseInt(cmd[1]);
-                    LightningChat.currentQuizQuestion = questionId;
-                    LightningChat.onInitialQuizQuestionShouldChange(LightningChat.initialQuiz[questionId]);
-                    // This is a message block
-                    if(!LightningChat.initialQuiz[questionId].choice){
-                        setTimeout(function(){
-                            LightningChat.onInitialQuizShouldEnd();
-                        }, LightningChat.initialQuiz[questionId].time);
-                    }
-                } else if (cmd[0] == "end") {
-                    LightningChat.onInitialQuizShouldEnd();
-                } else if (cmd[0] == "assign") {
-                    LightningChat.ajax.post(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/assigned_agent/" + cmd[1], {} , function(data){
-                        try {
-                            data = JSON.parse(data);
-                        } catch (e) {
-                            // Failed to parse response
-                            console.log("Failed to parse response (runInitialQuizAction)");
-                            return;
-                        }
-                    });
+          }
+        }
+        consequence = consequence.split(",");
+        for(i in consequence){
+            cmd = consequence[i].split(" ");
+            if(cmd[0] == "to"){
+                questionId = parseInt(cmd[1]);
+                LightningChat.currentQuizQuestion = questionId;
+                LightningChat.onInitialQuizQuestionShouldChange(LightningChat.initialQuiz[questionId]);
+                // This is a message block
+                if(LightningChat.initialQuiz[questionId].type === "exit-message"){
+                    setTimeout(function(){
+                        LightningChat.onInitialQuizShouldEnd();
+                    }, LightningChat.initialQuiz[questionId].time);
                 }
+            } else if (cmd[0] == "end") {
+                LightningChat.onInitialQuizShouldEnd();
+            } else if (cmd[0] == "assign") {
+                LightningChat.ajax.post(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/assigned_agent/" + cmd[1], {} , function(data){
+                    try {
+                        data = JSON.parse(data);
+                    } catch (e) {
+                        // Failed to parse response
+                        console.log("Failed to parse response (runInitialQuizAction)");
+                        return;
+                    }
+                });
             }
         }
     },

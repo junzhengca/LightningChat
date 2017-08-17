@@ -14,17 +14,18 @@
     lightningChatApiBase = "http://192.168.1.37:4000";
     lightningChatInterfaceResources = {
         htmlPath:"ui.html",
-        welcomeMessage: "Welcome to AMACSS at UTSC, how can we help?",
+        welcomeMessage: "Hi, future hacker! How can we help?",
         emailMessage: "What is you email address? if you are away, you will recieve an email notification when we reply.",
         offlineMessage: "We are currently offline, send us an email, and we will get back to you as soon as possible."
     };
     lightningChatInitialQuiz = [
         {
+            type:"multiple-choice",
             question:"Hi, which category can we help you with?",
             choice:[
-                "Academic",
-                "Events",
-                "General"
+                "Application",
+                "Travel Reimbursement",
+                "Other"
             ],
             consequence:[
                 "assign junzheng,to 2",
@@ -33,18 +34,15 @@
             ]
         },
         {
-            question:"What types of event are you looking for?",
-            choice:[
-                "Hackathons",
-                "Study Groups"
-            ],
-            consequence:[
-                "assign junzheng,to 2",
-                "to 0"
-            ]
+          type:"message",
+          message:"<p style='text-align:left; font-size: 14px;'>We currently do have have any information on travel reimbursements.<br>Please check back with us later.</a>",
+          buttons: [
+            { text:"Back", action:"to 0" }
+          ]
         },
         {
-            message:"Thank you, you will be connected with one of our agents.",
+            type:"exit-message",
+            message:"Thank you, please wait ...",
             choice:null,
             time:2000
         }

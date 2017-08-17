@@ -50,6 +50,13 @@ function lightningChatInitialize(){
         });
     };
 
+    LightningChat.dom.id("lightning-chat-start-over-controls").onclick = function(){
+        LightningChat.setCookie("lcskey", "", -1);
+        LightningChat.init(function(){
+            reloadSessionEmail();
+        });
+    };
+
     LightningChat.dom.id("lightning-chat-send-email-button").onclick = function() {
       var email = LightningChat.dom.id("lightning-chat-send-email-from-box").value
       LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-send-email-from-box"), "error")
@@ -125,27 +132,38 @@ function lightningChatInitialize(){
         LightningChat.dom.addClass(LightningChat.dom.id("bubble-container"), "lightning-chat-hidden");
         LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-controls"), "lightning-chat-hidden");
         LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-initial-quiz-container"), "lightning-chat-hidden");
-
+        LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-offline-email"), "lightning-chat-hidden");
     }
 
     LightningChat.onInitialQuizQuestionShouldChange = function(question){
         console.log(question);
-        if(question.choice){
-            LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.question;
-            LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
-            for(i in question.choice){
-                LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML += "<li onclick='LightningChat.runInitialQuizAction(" + i + ")'>" + question.choice[i] + "</li>";
-            }
+        if(question.type === "message"){
+          console.log("Displaying Message")
+          LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.message;
+          LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
+          question.buttons.forEach(function(button){
+            LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML += "<li onclick='LightningChat.runInitialQuizAction(false, \"" + button.action + "\")'>" + button.text + "</li>";
+          })
         } else {
-            LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.message;
-            LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
+          if(question.choice){
+              LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.question;
+              LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
+              for(i in question.choice){
+                  LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML += "<li onclick='LightningChat.runInitialQuizAction(" + i + ")'>" + question.choice[i] + "</li>";
+              }
+          } else {
+              LightningChat.dom.id("lightning-chat-initial-quiz-message").innerHTML = question.message;
+              LightningChat.dom.id("lightning-chat-initial-quiz-choices").innerHTML = "";
+          }
         }
     }
 
     LightningChat.onInitialQuizShouldEnd = function(quiz){
+
         LightningChat.dom.removeClass(LightningChat.dom.id("bubble-container"), "lightning-chat-hidden");
         LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-controls"), "lightning-chat-hidden");
         LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-initial-quiz-container"), "lightning-chat-hidden");
+        LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-offline-email"), "lightning-chat-hidden");
     }
 
     LightningChat.onHeartBeat = function(){

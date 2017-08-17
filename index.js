@@ -19,7 +19,7 @@ var controller = null;
 var bot = null;
 var bot_utility = require("./bot_utility.js");
 
-var util = require('./util')(db, settings)
+var util = require('./util')(db, settings, mailgun)
 console.log(util)
 
 initialize()
@@ -32,7 +32,7 @@ require('./listeners/session')(controller, util, bot_utility, db)
 require('./listeners/archive')(controller, util, bot_utility, db)
 
 require('./routes/sessions')(app, util, db, bot)
-
+require('./routes/email')(app, util, db, bot)
 var bot
 
 function initialize(){

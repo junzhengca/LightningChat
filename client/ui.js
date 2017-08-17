@@ -50,6 +50,23 @@ function lightningChatInitialize(){
         });
     };
 
+    LightningChat.dom.id("lightning-chat-send-email-button").onclick = function() {
+      var email = LightningChat.dom.id("lightning-chat-send-email-from-box").value
+      LightningChat.dom.removeClass(LightningChat.dom.id("lightning-chat-send-email-from-box"), "error")
+      if(LightningChat.validateEmail(email)){
+        LightningChat.dom.id("lightning-chat-send-email-button").innerHTML + "Please wait ..."
+        LightningChat.ajax.post(LightningChat.apiBase + "/email", {
+          from: email,
+          message: LightningChat.dom.id("lightning-chat-send-email-message-box").value
+        }, function(data) {
+          console.log(data)
+          LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-offline-email"), "lightning-chat-offline-email-sent")
+        })
+      } else {
+        LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-send-email-from-box"), "error")
+      }
+    }
+
 
     LightningChat.dom.id("lightning-chat-email-box").onblur = function(){
         if(LightningChat.validateEmail(LightningChat.dom.id("lightning-chat-email-box").value)){

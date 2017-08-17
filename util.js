@@ -1,4 +1,5 @@
-module.exports = (db, settings) => {
+module.exports = (db, settings, mailgun) => {
+  this.mailgun = mailgun
   // Return true if input time is expired
   this.isOffline = function(time){
     let current_time = Math.round(+new Date()/1000);
@@ -125,6 +126,10 @@ module.exports = (db, settings) => {
 
   this.setOnlineStatus = function(stat){
     settings.online = stat
+  }
+
+  this.getMailingList = function(){
+    return settings.mailing_list
   }
 
   this.getOnlineStatus = function(){

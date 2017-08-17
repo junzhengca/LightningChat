@@ -24,7 +24,7 @@ module.exports = (controller, util, bot_utility, db) => {
                           "Please do not reply to this email. To see your chat history, visit amacss.org"
                   };
 
-                  mailgun.messages().send(data, function (error, body) {
+                  util.mailgun.messages().send(data, function (error, body) {
                     console.log(body);
                   });
                 }

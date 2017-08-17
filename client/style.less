@@ -59,6 +59,9 @@
           outline: none;
           padding-top: 5px;
           padding-bottom: 5px;
+          &.error {
+            border-bottom: red 2px solid;
+          }
         }
         textarea {
           min-height: 100px;
@@ -88,6 +91,25 @@
       &.lightning-chat-offline {
         #lightning-chat-offline-email {
           display: block;
+          #lightning-chat-offline-email-sent-message {
+            display: none;
+          }
+          &.lightning-chat-offline-email-sent {
+            #lightning-chat-title {
+              #lightning-chat-offline-message {
+                display: none;
+              }
+            }
+            input, textarea, label, button {
+              display: none;
+            }
+            #lightning-chat-offline-email-sent-message {
+              display: block;
+            }
+          }
+        }
+        #lightning-chat-initial-quiz-container {
+          display: none;
         }
         #bubble-container {
           display: none;
@@ -106,7 +128,6 @@
             display: none;
           }
         }
-
       }
         background-color: white;
         width: 400px;

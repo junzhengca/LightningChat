@@ -33,12 +33,12 @@ require('./listeners/archive')(controller, util, bot_utility, db)
 
 require('./routes/sessions')(app, util, db, bot)
 
+var bot
+
 function initialize(){
     // Function to start the RTM server.
     function startRtm(callback) {
-        bot = controller.spawn({
-            token: settings.slack_bot_key
-        }).startRTM(function(err,bot,payload) {
+        bot.startRTM(function(err,bot,payload) {
             if (err) {
                 console.log('❌ Failed to start RTM')
                 return setTimeout(startRtm, 60000);
@@ -91,7 +91,11 @@ function initialize(){
     // Initialize Botkit
     controller = botkit.slackbot({
         debug: false
-    });
+    })
+
+    bot = controller.spawn({
+        token: settings.slack_bot_key
+    })
 
     // Restart RTM once disconnected
     controller.on('rtm_close', (bot, err) => {

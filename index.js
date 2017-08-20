@@ -4,6 +4,8 @@ var body_parser = require('body-parser')
 const app = express()
 var cors = require('cors')
 app.use(body_parser.json())
+// Fix CORS
+app.use(cors())
 app.use('/client', express.static('client'))
 // Load colors
 var colors = require('colors')
@@ -35,9 +37,6 @@ require('./listeners/archive')(controller, util, bot_utility, db)
 require('./routes/sessions')(app, util, db, bot)
 require('./routes/email')(app, util, db, bot)
 var bot
-
-// Fix CORS
-app.use(cors())
 
 function initialize(){
     // Function to start the RTM server.

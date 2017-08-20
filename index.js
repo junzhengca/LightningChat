@@ -35,6 +35,13 @@ require('./routes/sessions')(app, util, db, bot)
 require('./routes/email')(app, util, db, bot)
 var bot
 
+// Fix CORS
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+})
+
 function initialize(){
     // Function to start the RTM server.
     function startRtm(callback) {

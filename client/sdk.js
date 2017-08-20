@@ -167,6 +167,19 @@ var LightningChat = {
         return re.test(email);
     },
     sendMessage: function(message, callback){
+      // We directly add the message to list
+      LightningChat.messages.push({
+        id:-1,
+        identifier: null,
+        message: message,
+        sender: "visitor"
+      });
+      LightningChat.onNewMessage({
+        id:-1,
+        identifier: null,
+        message: message,
+        sender: "visitor"
+      });
         LightningChat.ajax.post(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey, {message: message}, function(data){
             try {
                 data = JSON.parse(data);

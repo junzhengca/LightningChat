@@ -167,6 +167,7 @@ var LightningChat = {
         return re.test(email);
     },
     sendMessage: function(message, callback){
+      var callback = callback;
       // We directly add the message to list
       LightningChat.messages.push({
         id:-1,
@@ -201,7 +202,7 @@ var LightningChat = {
                   data = JSON.parse(data);
               } catch (e) {
                   // Failed to parse response
-                  callback(false); return;
+                  return;
               }
               LightningChat.isOnline = data.online
               LightningChat.onHeartBeat()
@@ -226,6 +227,7 @@ var LightningChat = {
     },
     // Get basic information about a session
     getSession: function(sessionKey, callback) {
+      var callback = callback;
         this.ajax.get(this.apiBase + "/sessions/" + sessionKey, {}, function(data){
             try {
                 data = JSON.parse(data);

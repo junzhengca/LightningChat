@@ -99,10 +99,12 @@ var LightningChat = {
                     // Session key not found
                     console.log("Session key not found (checkInterval)");
                 } else {
+                  if(data.length > LightningChat.messages.length){
                     for (i = data.length - (data.length - LightningChat.messages.length); i < data.length; i++){
                         LightningChat.onNewMessage(data[i]);
+                        LightningChat.messages.push(data[i]);
                     }
-                    LightningChat.messages = data;
+                  }
                 }
             })
             LightningChat.ajax.get(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/info", {}, function(data){

@@ -197,7 +197,12 @@ var LightningChat = {
     beginHeartBeat: function(){
         setInterval(function(){
             LightningChat.ajax.get(LightningChat.apiBase + "/sessions/" + LightningChat.sessionKey + "/heartbeat", {}, function(data){
-              data = JSON.parse(data)
+              try {
+                  data = JSON.parse(data);
+              } catch (e) {
+                  // Failed to parse response
+                  callback(false); return;
+              }
               LightningChat.isOnline = data.online
               LightningChat.onHeartBeat()
               console.log("Heartbeat finished at " + (new Date()));

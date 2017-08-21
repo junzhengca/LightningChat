@@ -293,7 +293,7 @@
     bottom: 50px;
     left: 0;
     height: 400px;
-    max-height: 30vh;
+    max-height: 25vh;
     overflow-y: scroll;
     padding-bottom: 20px;
 }
@@ -340,4 +340,55 @@
 
 #lightning-chat-initial-quiz-message {
     padding: 20px !important;
+}
+
+
+@media (max-width: 400px){
+  #lightning-chat-container{
+    #lightning-chat-begin-chat-button {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
+    #lightning-chat-title {
+      padding: 20px;
+    }
+    #lightning-chat-email-message {
+      font-size: 12px !important;
+    }
+    #lightning-chat-email-form {
+      padding-top: 10px !important;
+    }
+    #lightning-chat-content-container {
+      bottom: 45px;
+      max-width: 85vw;
+      max-height: 70vh;
+      #lightning-chat-initial-quiz-container {
+        p {
+          font-size: 15px;
+        }
+      }
+      #lightning-chat-offline-email {
+        label {
+          font-size: 12px;
+        }
+      }
+      #lightning-chat-send-email-message-box {
+        min-height: 50px !important;
+      }
+      #lightning-chat-offline-message {
+        font-size: 15px;
+      }
+      #lightning-chat-welcome-message {
+        font-size: 15px;
+      }
+      #lightning-chat-initial-quiz-choices {
+        font-size: 15px;
+        li {
+          padding: 5px;
+        }
+      }
+    }
+  }
+
 }

@@ -1,0 +1,27 @@
+#home {
+  text-align: center;
+}
+#home .logo {
+  font-size: 50px;
+  padding-top: 100px;
+  margin: 0;
+}
+#home h1 {
+  font-size: 50px;
+}
+#home .release {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+#home .description {
+  font-size: 20px;
+}
+#in-action {
+  text-align: center;
+  padding-top: 100px;
+}
+#contact {
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}

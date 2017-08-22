@@ -1,8 +1,0 @@
-site_name: LightningChat
-pages:
-  - Home: index.md
-  - Setup: setup.md
-  - Server Configuration: server_config.md
-  - Client Configuration: client_config.md
-  - Releases: releases.md
-theme: cinder

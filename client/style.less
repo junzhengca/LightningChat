@@ -342,6 +342,31 @@
     padding: 20px !important;
 }
 
+#lightning-chat-notify-message {
+  position: absolute;
+  right: 30px;
+  width: max-content;
+  bottom: 70px;
+  background-color: #1976D2;
+  color: white;
+  border-radius: 10px;
+  border-bottom-right-radius: 0;
+  padding: 20px;
+  box-shadow: rgba(0,0,0,0.1) 5px 5px 10px;
+  overflow: none;
+  transform: scale(0);
+  transition: all ease 0.3s;
+  transform-origin: 100% 100%;
+  &.lc-notify-message-shown {
+    transition: all ease 0.3s;
+    transform: scale(1);
+  }
+  &.lc-do-not-show {
+    transform: scale(0) !important;
+    transition: all ease 0.3s;
+  }
+}
+
 
 @media (max-width: 400px){
   #lightning-chat-container{

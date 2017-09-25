@@ -4,6 +4,8 @@ LightningChat.devMode = true; // !!@!!DELETEONCOMPILE
 // Load fontawesome
 document.body.innerHTML += '<link href="https://ssl.jackzh.com/file/css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />';
 
+lightningChatNotificationRegistered = false;
+
 // Load UI HTML
 LightningChat.ajax.get(LightningChat.interfaceResources.htmlPath, {}, function(data){
     document.body.innerHTML += data;
@@ -176,6 +178,18 @@ function lightningChatInitialize(){
           LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-content-container"), "lightning-chat-offline")
         }
       }
+
+      if(!lightningChatNotificationRegistered){
+        // Check to see if notification bubble exists
+        if(lightningChatNotifyMessage){
+            setTimeout(function(){
+                LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-notify-message"), "lc-notify-message-shown");
+                LightningChat.dom.id("lightning-chat-notify-message").innerHTML = lightningChatNotifyMessage;
+            }, 5000);
+            lightningChatNotificationRegistered = true;
+        }
+      }
+      
     }
 
 
@@ -198,5 +212,6 @@ function lightningChatInitialize(){
     LightningChat.dom.id("lightning-chat-begin-chat-button").onclick = function(){
         LightningChat.dom.toggleClass(LightningChat.dom.id("lightning-chat-content-container"), "not-shown");
         LightningChat.dom.toggleClass(LightningChat.dom.id("lightning-chat-begin-chat-button"), "active");
+        LightningChat.dom.addClass(LightningChat.dom.id("lightning-chat-notify-message"), "lc-do-not-show");
     }
 }

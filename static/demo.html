@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="lib/lightningchat.bundle.js"></script>
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            #lightning-chat-dev-log {
+                font-family: monospace;
+                max-width: 500px;
+                overflow: scroll;
+                max-height: 100vh;
+                height: 100vh;
+                background-color: black;
+                color: lightgreen;
+                padding: 5px;
+            }
+            #lightning-chat-dev-log span {
+                display: inline-block;
+                margin: 10px;
+                background-color: rgba(255,255,255,0.2);
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="lightning-chat-dev-log"><b>&copy; Jun Zheng All Rights Reserved. LightningChat Demo 🍋 ⚡</b></div>
+        <script>
+            var lightningChat = new LightningChat({
+                serverAddress: "192.168.1.61:3000"
+            });
+        </script>
+    </body>
+</html>

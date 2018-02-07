@@ -1,3 +1,19 @@
+body {
+  background-color: #3C8BB6;
+  padding-top: 100px;
+}
+#top #logo {
+  margin-top: 100px;
+}
+#top p {
+  font-family: 'Varela Round', sans-serif;
+  color: white;
+}
+#top p.description {
+  font-size: 20px;
+  font-weight: 100;
+  padding-top: 20px;
+}
 #home {
   text-align: center;
 }
@@ -24,4 +40,13 @@
   text-align: center;
   padding-top: 100px;
   padding-bottom: 100px;
+}
+@media (max-width: 400px) {
+  body {
+    padding-top: 50px;
+    overflow-x: hidden;
+  }
+  #logo {
+    width: 200px;
+  }
 }

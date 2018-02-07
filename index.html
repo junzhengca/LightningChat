@@ -1,49 +1,179 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>⚡Lightning Chat</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="styles/style.css" />
+    <title>⚡LightningChat</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles/style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-  </head>
-  <body>
-    <div class="container">
-      <section id="home">
-        <p class="logo">⚡</p>
-        <h1>Lightning Chat</h1>
-        <br>
-        <div class="alert alert-info" role="alert">
-          <strong>Incoming huge release!</strong> Version v0.1.0 Remon 🍋 <br>
-          <hr>
-          Get ready for WebSocket, and better Slack integration.
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <section id="top">
+        <div class="row">
+            <div class="col-lg-6">
+                <img src="resources/logo-white.svg" width="400" id="logo"/>
+                <p class="description">
+                    Open-source, lightweight live chat for your website.<br><br>
+                    ✓ Free to use<br>
+                    ✓ Extensible<br>
+                    ✓ Slack integration<br><br>
+                    Coming soon ...
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <svg id="home-svg" width="600px" height="560px"></svg>
+            </div>
         </div>
-        <p class="release text-muted">Current Pre-Release <span class="badge badge-primary">v0.0.6</span> Hariwini Aleix</p><br>
-        <a href="https://github.com/junthehacker/LightningChat/releases/tag/v0.0.6"><button class="btn btn-primary"><i class="ion-android-download"></i> Download v0.0.6</button></a>
-        <a href="https://github.com/junthehacker/LightningChat"><button class="btn btn-primary"><i class="ion-social-octocat"></i> GitHub</button></a>
-        <br><br>
-        <p class="description">
-          Open-source chat for your website.
-        </p>
-        <span class="text-muted">Built with ❤️  by students at the University of Toronto Scarborough.</span>
-      </section>
-      <section id="in-action">
-        <h2>Built for Slack</h2>
-        <p>LightningChat is built for Slack, the tool your team is most likely already using.</p>
-        <br><br>
-        <img src="https://camo.githubusercontent.com/ed802ce05e84f5654bd69c14b4703c9038b0e6de/68747470733a2f2f692e696d6775722e636f6d2f746850663058762e676966" class="img-fluid" width="500" />
-        <br><br>
-        <h2>Lightning Fast and Lightweight</h2>
-        <p>Built with SQLite 3 &amp; Node.js, LightningChat is lightning fast!</p>
-      </section>
-      <section id="contact">
-        <h2>Contact Us</h2>
-        <p>Send us an email at <code>jun dot zheng at mail dot utoronto dot ca</code></p>
-      </section>
-    </div>
-  </body>
+    </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+<script>
+    var s = Snap("#home-svg");
+    var defaultShadowFilter = s.filter(Snap.filter.shadow(4, 4, 5, "black", .1));
+    var circle = s.circle(495, 500, 40, 40);
+    circle.attr({
+        fill: "#42aed8",
+        filter: defaultShadowFilter
+    });
+
+    var dialogA = s.rect(20, 20, 300, 40, 20, 20);
+    dialogA.attr({
+        fill: "#42aed8",
+        filter: defaultShadowFilter
+    });
+    var dialogALineA = s.rect(35, 35, 240, 10, 5, 5);
+    dialogALineA.attr({
+        fill: "#ffffff",
+        opacity: 0.2
+    });
+    var dialogAGroup = s.group(dialogA, dialogALineA);
+    dialogAGroup.transform("t-400,380");
+
+
+    var dialogB = s.rect(220, 80, 320, 80, 20, 20);
+    dialogB.attr({
+        fill: "#2e6d8e",
+        filter: defaultShadowFilter
+    });
+    var dialogBLineA = s.rect(285, 100, 240, 10, 5, 5);
+    dialogBLineA.attr({
+        fill: "#ffffff",
+        opacity: 0.1
+    });
+    var dialogBLineB = s.rect(265, 130, 260, 10, 5, 5);
+    dialogBLineB.attr({
+        fill: "#ffffff",
+        opacity: 0.1
+    });
+    var dialogBGroup = s.group(dialogB, dialogBLineA, dialogBLineB);
+    dialogBGroup.transform("t500,270");
+
+
+    var dialogC = s.rect(20, 180, 250, 40, 20, 20);
+    dialogC.attr({
+        fill: "#42aed8",
+        filter: defaultShadowFilter
+    });
+    var dialogCLineA = s.rect(35, 195, 170, 10, 5, 5);
+    dialogCLineA.attr({
+        fill: "#ffffff",
+        opacity: 0.2
+    });
+    var dialogCGroup = s.group(dialogC, dialogCLineA);
+    dialogCGroup.transform("t-400,210");
+
+    var dialogD = s.rect(140, 240, 400, 40, 20, 20);
+    dialogD.attr({
+        fill: "#2e6d8e",
+        filter: defaultShadowFilter
+    });
+    var dialogDLineA = s.rect(245, 255, 280, 10, 5, 5);
+    dialogDLineA.attr({
+        fill: "#ffffff",
+        opacity: 0.1
+    });
+    var dialogDGroup = s.group(dialogD, dialogDLineA);
+    dialogDGroup.transform("t500,150");
+
+    var dialogE = s.rect(20, 300, 360, 80, 20, 20);
+    dialogE.attr({
+        fill: "#42aed8",
+        filter: defaultShadowFilter
+    });
+    var dialogELineA = s.rect(35, 320, 170, 10, 5, 5);
+    dialogELineA.attr({
+        fill: "#ffffff",
+        opacity: 0.2
+    });
+    var dialogELineB = s.rect(35, 350, 270, 10, 5, 5);
+    dialogELineB.attr({
+        fill: "#ffffff",
+        opacity: 0.2
+    });
+    var dialogEGroup = s.group(dialogE, dialogELineA, dialogELineB);
+    dialogEGroup.transform("t-400,60");
+
+
+    var dialogF = s.rect(340, 400, 200, 40, 20, 20);
+    dialogF.attr({
+        fill: "#2e6d8e",
+        filter: defaultShadowFilter
+    });
+    var dialogFLineA = s.rect(375, 415, 150, 10, 5, 5);
+    dialogFLineA.attr({
+        fill: "#ffffff",
+        opacity: 0.1
+    });
+    var dialogFGroup = s.group(dialogF, dialogFLineA);
+    dialogFGroup.transform("t400,0");
+
+    circle.animate({r: 30}, 300, mina.backout, function(){
+        circle.animate({r: 45}, 300, mina.backout, function(){
+            dialogAGroup.animate({transform: "t0,380"}, 500, mina.backout, function(){
+                dialogAGroup.animate({transform: "t0,270"}, 500, mina.backout);
+                dialogBGroup.animate({transform: "t0,270"}, 500, mina.backout, function(){
+                    dialogAGroup.animate({transform: "t0,210"}, 500, mina.backout);
+                    dialogBGroup.animate({transform: "t0,210"}, 500, mina.backout);
+                    dialogCGroup.animate({transform: "t0,210"}, 500, mina.backout, function(){
+                        dialogAGroup.animate({transform: "t0,150"}, 500, mina.backout);
+                        dialogBGroup.animate({transform: "t0,150"}, 500, mina.backout);
+                        dialogCGroup.animate({transform: "t0,150"}, 500, mina.backout);
+                        dialogDGroup.animate({transform: "t0,150"}, 500, mina.backout, function(){
+                            dialogAGroup.animate({transform: "t0,60"}, 500, mina.backout);
+                            dialogBGroup.animate({transform: "t0,60"}, 500, mina.backout);
+                            dialogCGroup.animate({transform: "t0,60"}, 500, mina.backout);
+                            dialogDGroup.animate({transform: "t0,60"}, 500, mina.backout);
+                            dialogEGroup.animate({transform: "t0,60"}, 500, mina.backout, function(){
+                                dialogAGroup.animate({transform: "t0,0"}, 500, mina.backout);
+                                dialogBGroup.animate({transform: "t0,0"}, 500, mina.backout);
+                                dialogCGroup.animate({transform: "t0,0"}, 500, mina.backout);
+                                dialogDGroup.animate({transform: "t0,0"}, 500, mina.backout);
+                                dialogEGroup.animate({transform: "t0,0"}, 500, mina.backout);
+                                dialogFGroup.animate({transform: "t0,0"}, 500, mina.backout, function(){
+
+                                })
+                            })
+                        })
+                    })
+                })
+            })
+        });
+    })
+
+
+</script>
+</body>
 </html>
